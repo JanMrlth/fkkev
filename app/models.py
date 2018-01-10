@@ -14,7 +14,7 @@ class User(db.Model):
     membertype = db.Column(db.Integer,default=1) # 1 = Ordinary Member, 2 =Sustaining Member
     persontype = db.Column(db.Integer,default=2) #1 = Legal Person , 2 = Natural Person
     first_fee = db.Column(db.Integer,nullable=False)
-    fee = db.Column(db.Integer, nullable=False)
+    monthlyfee = db.Column(db.Integer, nullable=False)
     status = db.Column(db.Integer,default=2) #1 = Active,2=Inactive,3=Leaked,4=Deceased
 
     #Company

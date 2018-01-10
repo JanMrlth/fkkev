@@ -6,7 +6,7 @@ from app import app,db
 class User(db.Model):
     #login
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(254),nullable=False)
+    email = db.Column(db.String(254),unique=True,nullable=False)
     password = db.Column(db.String(400),nullable=False)
     authenticated = db.Column(db.Boolean, default=False)
 
@@ -58,6 +58,39 @@ class Bankdetails(db.Model):
     sepa_ref = db.Column(db.String(200),nullable=False)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
     
+
+    
+    
+    
+##############  Pictures & References  ##############  
+
+### Table to link multiple pictures to multiple posts
+#pictureUsage = db.Table('pictures',
+#    db.Column('pic_id', db.Integer, db.ForeignKey('Picture.id'), primary_key=True),
+#    db.Column('page_id', db.Integer, db.ForeignKey('page.id'), primary_key=True)
+#)
+
+
+#class Picture(db.Model):
+#    id = db.Column(db.Integer, primary_key=True)
+#    upload_date = db.Column(db.DateTime, default=datetime.utcnow)
+#    ### do be finished
+    
+
+# Wrapper to add multiple pictures to Newselements and Reports
+#class Post(db.Model): 
+#    id = db.Column(db.Integer, primary_key=True)
+#    post_type = db.Column(db.Integer)
+#    ##################################################################
+#    ### 1, Blog/News Entry
+#    ##### Tree Realated
+#    ### 2, PruningReport 
+#    ### 3, PickingReport 
+#    ### 4, TreeDocumentation
+#    ##################################################################
+#    pictures = db.relationship('Picture', secondary=pictures, lazy='subquery',
+#        backref=db.backref('pages', lazy=True))
+
 
     
 ##############  Blog/News-Entrys  ##############  

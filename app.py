@@ -5,8 +5,9 @@
 from flask import Flask
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
-from flask_wtf.csrf import CSRFProtect
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -15,7 +16,6 @@ from flask_wtf.csrf import CSRFProtect
 app = Flask(__name__)
 app.config.from_object('config')
 
-csrf = CSRFProtect(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
@@ -24,9 +24,12 @@ login_manager.session_protection = "strong"
 mail = Mail(app)
 
 db = SQLAlchemy(app)
-# from Models import *
-#STart
-#End
+migrate = Migrate(app, db)
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
+
+from models import *
+
 from views import *
 
 # Default port:

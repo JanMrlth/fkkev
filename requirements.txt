@@ -5,3 +5,5 @@ WTForms
 coverage
 flask-login
 Flask-Mail
+flask-alembic
+werkzeug==0.9

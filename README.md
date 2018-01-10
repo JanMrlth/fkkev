@@ -58,3 +58,8 @@ Project Structure
           ├── placeholder.about.html
           └── placeholder.home.html
   ```
+
+
+  '''
+  Notes: pip install https://github.com/mitsuhiko/flask/tarball/master - Alembic
+  '''

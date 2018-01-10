@@ -1,9 +1,10 @@
 Fabric
 Flask-SQLAlchemy
-Flask-WTF
+Flask-WTF==0.14
 WTForms
 coverage
 flask-login
 Flask-Mail
 flask-alembic
 werkzeug==0.9
+flask-bcrypt

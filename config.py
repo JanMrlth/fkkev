@@ -16,3 +16,9 @@ SQLALCHEMY_DATABASE_URI = 'mysql://root:mysql@localhost:3306/fkkevdb'
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 MIN_FEE = 3
+
+PWS_SIZE = 10
+BLOCK_SIZE = 16
+PADDING = '{'
+
+secret_key = 'KdHAkFFhXXvkwMoG'

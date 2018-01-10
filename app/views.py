@@ -130,9 +130,16 @@ def register():
         bankObj.bic = EncodeAES(cipher, bic)
         bankObj.blc = form.bic.data
         bankObj.sepa_date = datetime.datetime.now
+        bankObj.sepa_ref = 'FraKeKueV'
+        if not form.membertype.data:
+            bankObj.sepa_ref += 'OrdM'
+        else:
+            bankObj.sepa_ref += 'FoeM'
+        bankObj.sepa_ref += iban_visible[:6]
+
         userObj.bankdetails.append(bankObj)
-        db.session.commit(userObj)
-        db.session.commit(bankObj)
+        db.session.add(userObj)
+        db.session.add(bankObj)
         db.session.commit()
         flash('Registered Id Successfully','success')
         return redirect(url_for('index'))

@@ -13,10 +13,10 @@ from logging import Formatter, FileHandler
 
 from app.forms import *
 import os
-from flask_mail import Mail
+from flask_mail import Mail, Message
 from Crypto.Cipher import AES
 from schwifty import IBAN
-from config import BLOCK_SIZE, PADDING, secret_key
+from config import BLOCK_SIZE, PADDING, secret_key, ADMINS
 
 pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
 EncodeAES = lambda c, s: base64.b64encode(c.encrypt(pad(s)))
@@ -27,6 +27,7 @@ cipher = AES.new(secret_key)
 # ----------------------------------------------------------------------------#
 from app.models import User, Bankdetails
 
+memberType = ['']
 
 @app.route('/', methods=['GET'])
 def index():
@@ -134,6 +135,13 @@ def register():
         db.session.add(userObj)
         db.session.add(bankObj)
         db.session.commit()
+
+        # Sending Email
+        msg = Message('Anmeldung Frankfurter Kelterei Kultur e.V.', sender=ADMINS[0], recipients=ADMINS)
+        msg.body = 'Halle '+userObj.firstname + '\n\n';
+        msg.body += 'Wir freuen über dein Interesse an der Frankfurter Kelterei Kultur! Du hast folgende Daten für die Anmeldungübermittelt. Aus Gründen des Datenschutzes, musst du diese Daten ein zweites Mal aktiv bestätigen (double opt-in):'
+        msg.body += 'Mitgliedsart: ' + userObj.membertype
+
         flash('Registered Id Successfully','success')
         return redirect(url_for('index'))
 
@@ -141,7 +149,6 @@ def register():
 def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
-
 
 # Error handlers.
 

@@ -59,12 +59,9 @@ class RegisterForm(Form):
     iban = IntegerField(
         'Iban',validators=[DataRequired()]
     )
-    bic = IntegerField(
-        'Bic',validators=[DataRequired()]
-    )
-    blz = IntegerField(
-        'Blz',validators=[DataRequired()]
-    )
+    # blz = IntegerField(       #Bank Code
+    #     'Blz',validators=[DataRequired()]
+    # )
     fee = RadioField(
         [Required()],
         choices=[(3, '3€'), (6, '6€'),(30,'30€')], default=3

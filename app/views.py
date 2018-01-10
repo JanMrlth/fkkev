@@ -15,7 +15,7 @@ from app.forms import *
 import os
 from flask_mail import Mail
 from Crypto.Cipher import AES
-
+from schwifty import IBAN
 from config import BLOCK_SIZE, PADDING, secret_key
 
 pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
@@ -100,7 +100,10 @@ def register():
         bankObj = Bankdetails()
         bankObj.account_holder = (form.firstname.data + " " + form.lastname.data).title()
         iban = form.iban.data
-        bic = form.bic.data
+        ibanobj = IBAN(iban)
+        bic = ibanobj.bic.compact
+        bankObj.blz = ibanobj.bank_code
+        bankObj.account_no = ibanobj.account_code
         digits = 0
         if iban > 0:
             digits = int(math.log10(iban)) + 1
@@ -113,30 +116,20 @@ def register():
             return redirect(url_for('register'))
         iban_visible = iban[:6] + 'X' * (digits - 10) + iban[-4:]
 
-        if bic > 0:
-            digits = int(math.log10(bic)) + 1
-        elif not bic:
-            digits = 1
-        else:
-            digits = int(math.log10(-bic)) + 2
-        if not (digits >= 5 and digits <= 15):
-            flash('Invalid BIC Number', 'error')
-            return redirect(url_for('register'))
-
         bic_visible = bic[:2] + 'X' * (digits - 4) + bic[-2:]
         bankObj.iban_visible = iban_visible
         bankObj.bic_visible = bic_visible
         bankObj.iban = EncodeAES(cipher, iban)
         bankObj.bic = EncodeAES(cipher, bic)
-        bankObj.blc = form.bic.data
         bankObj.sepa_date = datetime.datetime.now
+        rows = User.query.count()
         bankObj.sepa_ref = 'FraKeKueV'
         if not form.membertype.data:
             bankObj.sepa_ref += 'OrdM'
         else:
             bankObj.sepa_ref += 'FoeM'
         bankObj.sepa_ref += iban_visible[:6]
-
+        bankObj.sepa_ref += str((5-len(str(rows)))*'0') + str(rows)
         userObj.bankdetails.append(bankObj)
         db.session.add(userObj)
         db.session.add(bankObj)

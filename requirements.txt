@@ -8,3 +8,4 @@ Flask-Mail
 flask-alembic
 werkzeug==0.9
 flask-bcrypt
+schwifty

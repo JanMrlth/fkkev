@@ -12,6 +12,9 @@ class User(db.Model):
     password = db.Column(db.String(400),nullable=False)
     authenticated = db.Column(db.Boolean, default=False)
 
+    #admin
+    admin = db.Coloumn(db.Boolean,default=False)
+
     #Membership Details
     membertype = db.Column(db.Integer,default=1) # 1 = Ordinary Member, 2 =Sustaining Member
     persontype = db.Column(db.Integer,default=2) #1 = Legal Person , 2 = Natural Person
@@ -44,7 +47,7 @@ class User(db.Model):
 
     bankdetails = db.relationship('Bankdetails', backref='user',lazy='dynamic')
     confirmed = db.Column(db.Boolean,default=False)
-    confirmation = db.relationship("Confirmation", uselist=False, backref="User")
+    confirmation = db.relationship("Confirmation", backref="User",lazy='dynamic')
 
 class Bankdetails(db.Model):
     id = db.Column(db.Integer, primary_key=True,autoincrement=True)

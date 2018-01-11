@@ -175,7 +175,29 @@ def confirm_account(confirmation_sequence):
     confirmObj.user_id.confirmed = True
     db.session.add(confirmObj)
     db.session.commit()
-    flash('User Validated Successfully','success')
+
+    #Sending Email to the Admin
+    msg = Message('Mitgliedsanmeldung von Website', sender=ADMINS[0], recipients=[ADMINS[0]])
+    msg.body = 'Folgende Mitgliedsdaten wurden in unserem Anmeldformular eingegeben und per E-Mail bestätigt: '
+    endl = '\n\n'
+    userObj = confirmObj.user_id
+    bankObj = confirmObj.user_id.bankdetails.first()
+    msg.body += 'Mitgliedsart: ' + userObj.membertype + endl
+    msg.body += 'Firma:' + userObj.company + endl
+    msg.body += 'Name: ' + (userObj.firstname + ' ' + userObj.lastname).title() + endl
+    msg.body += 'Addresse: ' + userObj.road + endl + 'Zipcode: ' + userObj.postcode + endl + 'City: ' + userObj.town
+    msg.body += 'Alter: ' + userObj.bday.strftime("%Y-%m-%d") + endl * 3
+    msg.body += 'Kontodaten' + endl * 4 + '================='
+    msg.body += 'Kontoinhaber :' + bankObj.account_holder + endl
+    msg.body += 'IBAN :' + bankObj.iban_visible + endl
+    msg.body += 'BIC :' + bankObj.bic_visible + endl
+    msg.body += 'Monatsbeitrag :' + userObj.fee + '€' + endl
+    msg.body += 'Mitglied in Verein aufnehmen:' + endl
+    msg.body += app.config['BASE_URL'] + 'acceptuser/' + confirmation_sequence + endl
+    msg.body += 'Antrag ablehnen::' + endl
+    msg.body += app.config['BASE_URL'] + 'deleteuser/' + confirmation_sequence
+    mail.send(msg)
+    flash('User Validated Successfully!','success')
     return redirect(url_for('index'))   #Will Change this to profile Page
 
 @app.route('/deleteaccount/<deletion_sequence>')

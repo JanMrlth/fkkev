@@ -13,7 +13,7 @@ class User(db.Model):
     authenticated = db.Column(db.Boolean, default=False)
 
     #admin
-    admin = db.Coloumn(db.Boolean,default=False)
+    admin = db.Column(db.Boolean,default=False)
 
     #Membership Details
     membertype = db.Column(db.Integer,default=1) # 1 = Ordinary Member, 2 =Sustaining Member
@@ -43,7 +43,7 @@ class User(db.Model):
 
     
     updated_at = db.Column(db.DateTime, onupdate=datetime.datetime.utcnow)
-    last_seen = db.Column(db.DateTime, default=datetime.utcnow) #on website
+    last_seen = db.Column(db.DateTime, default=datetime.datetime.utcnow) #on website
 
     bankdetails = db.relationship('Bankdetails', backref='user',lazy='dynamic')
     confirmed = db.Column(db.Boolean,default=False)

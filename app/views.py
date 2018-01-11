@@ -30,6 +30,11 @@ from app.models import User, Bankdetails, Confirmation
 
 memberType = ['']
 
+#Custom Functions
+def sendAcceptancemail(user_id,selected=True):
+    #TODO: Yet to do
+    return redirect(url_for('index'))
+
 @app.route('/', methods=['GET'])
 def index():
     form = LoginForm(request.form)
@@ -195,7 +200,7 @@ def confirm_account(confirmation_sequence):
     msg.body += 'Mitglied in Verein aufnehmen:' + endl
     msg.body += app.config['BASE_URL'] + 'acceptuser/' + confirmation_sequence + endl
     msg.body += 'Antrag ablehnen::' + endl
-    msg.body += app.config['BASE_URL'] + 'deleteuser/' + confirmation_sequence
+    msg.body += app.config['BASE_URL'] + 'rejectuser/' + confirmation_sequence
     mail.send(msg)
     flash('User Validated Successfully!','success')
     return redirect(url_for('index'))   #Will Change this to profile Page
@@ -212,6 +217,45 @@ def delete_account(deletion_sequence):
     db.session.delete(confirmObj)
     db.session.commit()
     flash('User Deleted Successfully', 'warning')
+    return redirect(url_for('index'))
+
+@login_required
+@app.route('/acceptuser/<confirmation_code>')
+def accept_request(confirmation_code):
+    user = current_user
+    if user.admin is not True:
+        flash('Admin Access required','warning')
+        return redirect(url_for('logout'))
+    confirmObj = Confirmation.query.filter_by(confirmation_code=confirmation_code).first()
+    if confirmObj is None:
+        flash('Wrong Acceptance Code','error')
+        return redirect(url_for('index')) # Or any Other
+    confirmObj.user_id.confirmed = True
+    sendAcceptancemail(confirmObj.user_id.id)
+    db.session.add(confirmObj.user_id)
+    db.session.delete(confirmObj)
+    db.session.commit()
+    flash('User Accepted to the Organisation','success')
+    return redirect(url_for('index'))
+
+
+@login_required
+@app.route('/rejectuser/<confirmation_code>')
+def reject_user(confirmation_code):
+    user = current_user
+    if user.admin is not True:
+        flash('Admin Access required','warning')
+        return redirect(url_for('logout'))
+    confirmObj = Confirmation.query.filter_by(confirmation_code=confirmation_code).first()
+    if confirmObj is None:
+        flash('Wrong Acceptance Code','error')
+        return redirect(url_for('index')) # Or any Other
+
+    sendAcceptancemail(confirmObj.user_id.id,False)
+    db.session.delete(confirmObj.user_id)
+    db.session.delete(confirmObj)
+    db.session.commit()
+    flash('User Rejected from the Organisation','warning')
     return redirect(url_for('index'))
 
 @app.route('/forgot')

@@ -9,7 +9,7 @@ from wtforms.validators import DataRequired, EqualTo, Length, email, NumberRange
 
 class RegisterForm(Form):
     membertype = RadioField(
-        [Required()],
+        [DataRequired()],
         choices=[(1, 'Ordinary Member'), (2, 'Sustaining Member')], default=1
     )
     email = StringField(

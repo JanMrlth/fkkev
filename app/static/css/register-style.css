@@ -1,0 +1,68 @@
+.container__rigisterForm {
+	padding-top: 50px;
+	padding-left: 100px;
+	padding-right: 100px;
+	border: 2px solid grey;
+	box-sizing: border-box;
+}
+.registerForm__header {
+	margin-top: -20px;
+	border-radius: 5px;
+	background-color: #d1cdc4;
+}
+.registerForm__text {
+	font-size: 32px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 30px;
+	color: #2d2d2c;
+	font-family:'Raleway', sans-serif;
+	margin-top: 2px solid red;
+	cursor: pointer;
+}
+.registerForm__text :hover {
+	color: #0b1260;
+}
+
+.registerForm__footer {
+	margin-top: -9px;
+	background: #FFFFFF;
+	border: 1px solid #F2F2F2;
+	box-sizing: border-box;
+	box-shadow: 0px 4px 32px rgba(189, 189, 189, 0.24);
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 30px;
+	text-align: center;
+	padding-left: 30%;
+	padding-right: 30%;
+}
+#two {
+	display: none;
+}
+#three {
+	display: none;
+}
+#four {
+	display: none;
+}
+#firma {
+	display: none;
+}
+#jurPer {
+	display: none;
+}
+#topVAl {
+	display: none;
+}
+
+.file-input {
+margin-left: 466px;
+}
+
+#flag_one {
+	display: none;
+}
+#flag_two {
+	display: none;
+}

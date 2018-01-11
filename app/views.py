@@ -316,7 +316,8 @@ def not_found_error(error):
 
 @app.route('/test')
 def test():
-    return render_template('forms/login.html')
+    form = RegisterForm()
+    return render_template('forms/register.html',form=form)
 
 
 if not app.debug:

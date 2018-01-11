@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="register-style.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/register-style.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
@@ -36,12 +36,7 @@
     </div><!-- /.container -->
 </nav>
 <div class="container">
-    <!--     <div class="jumbotron">
-                <h1 style="font-family: 'Josefin Sans', sans-serif;
-    ">Frankfurter Kelterei Kultur eV</h1>
-                <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p>
-              </div> -->
-    <form>
+    <form method="POST" action="/register">
         <div class="container__rigisterForm" style=" margin-top: 80px;     box-shadow: 5px 10px #888888;">
             <div class="registerForm__header">
                 <h1 class="registerForm__text "><b>Page 1 of 4</b></h1>
@@ -49,27 +44,15 @@
             <div class="registerForm__footer" id="one">
 
                 <h3><b>Personal Details</b></h3>
-                <div class="form-check" style="display: inline;">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
-                           value="option1" checked onclick="showType1('firma')">
-                    <label class="form-check-label" for="exampleRadios1">
-                        &nbsp;Ordentliches Mitglied
-                    </label>
-                </div>
-                <div class="form-check" style="display: inline;">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
-                           value="option2" onclick="showType2('firma')">
-                    <label class="form-check-label" for="exampleRadios2">
-                        &nbsp;Förder-mitglied
-                    </label>
-                </div>
-
-
-                <!--                   <input type="text" name="" placeholder="Firma"  onchange="changeType(this.value)"> <br> <br>
-                 -->
-
+                {% set i=1 %}
+                {% for subField in form.membertype %}
+                    <div class="form-check" style="display: inline;">
+                        {{ subField(class="form-check-input",**{"onclick":"showType("~loop.index~")"}) }}
+                        {{ subField.label }}
+                    </div>
+                {% endfor %}
                 <br><br>
-                <div id="firma" style="left: 0px; position: relative;">
+                <div id="firma" style="left: 0; position: relative;">
                     <div class="alert alert-success">
                         <h5 id="natPer"><b>Natürliche Person</b></h5>
                         <h5 id="jurPer"><b>Juristische Person</b></h5>
@@ -77,7 +60,7 @@
 
                     <div class="form-group">
                         <label for="cName" style="float: left;">Firma</label>
-                        <input type="text" class="form-control" id="cNAme" aria-describedby="emailHelp"
+                        <input type="text" class="form-control" id="cName" aria-describedby="emailHelp"
                                placeholder="Company Name" onchange="changeType(this.value)">
                     </div>
                 </div>
@@ -176,30 +159,27 @@
                         <div class="form-check" style="display: inline;">
                             <input class="form-check-input" type="radio" name="exampleRadios-1" id="exampleRadios1-p"
                                    value="option1" checked onclick="changePayment(3)">
-                            <label class="form-check-label" for="exampleRadios1-p"">
-                            &nbsp;3 Euro
+                            <label class="form-check-label" for="exampleRadios1-p">
+                                &nbsp;3 Euro
                             </label>
                         </div>
                         <div class="form-check" style="display: inline;">
                             <input class="form-check-input" type="radio" name="exampleRadios-1" id="exampleRadios2-p"
                                    value="option2" onclick="changePayment(6)">
-                            <label class="form-check-label" for="exampleRadios2-p"">
-                            &nbsp;6 Euro
+                            <label class="form-check-label" for="exampleRadios2-p">
+                                &nbsp;6 Euro
                             </label>
                         </div>
                         <div class="form-check" style="display: inline;">
                             <input class="form-check-input" type="radio" name="exampleRadios-1" id="exampleRadios3-p"
                                    value="option2" onclick="changePayment(30)">
-                            <label class="form-check-label" for="exampleRadios3-p" ">
-                            &nbsp;30 Euro
+                            <label class="form-check-label" for="exampleRadios3-p">
+                                &nbsp;30 Euro
                             </label>
                         </div>
                     </div>
-
                     <br>
                     <div id="flag_two">
-
-
                         <div class="form-group">
                             <label for="paymen__twot" style="float: left;">Monthly Payment</label>
                             <input type="number" class="form-control" id="payment__two" value="50">
@@ -237,25 +217,6 @@
                 </div>
                 <div class="registerForm__footer" id="four">
                     <h3><b>All the details wiil be shown here for confrmation</b></h3>
-                    <!--               <div class="row">
-                                     <div class="col-md-6">
-                                        <b>Mitgliedsdaten</b>
-                                        <ul id="details_one">
-
-                                           <li> Nachname:</li>
-                                           <li> Straße:</li>
-                                           <li> PLZ:</li>
-                                           <li> Ort:</li>
-                                           <li> E-Mail:</li>
-                                           <li> E-Mail:</li>
-                                           <li>Mobil:</li>
-
-                                        </ul>
-                                     </div>
-                                     <div class="col-md-6">
-                                        <b>Finanzdaten</b>
-                                     </div>
-                                  </div> -->
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
@@ -287,21 +248,21 @@
         document.getElementById("bName").value = document.getElementById("fName").value + " " + document.getElementById("lName").value;
 
     }
-    function showType1(str_1) {
-        // body...
-        alert("Membership Type: Ordentliches Mitglied");
-        document.getElementById("topVAl").value = "";
-        document.getElementById(str_1).style.display = "none";
-        flag = 1;
-
-    }
-    function showType2(str) {
-        // body...
-        alert("Membership Type: Förder-mitglied");
-        document.getElementById(str).style.display = "inline";
-        document.getElementById("topVAl").value = "Natürliche Person";
-        flag = 0;
-
+    function showType(selector) {
+        console.log(selector);
+        if (selector == 1) {
+            // body...
+            alert("Membership Type: Ordentliches Mitglied");    //Full Member
+            document.getElementById("topVAl").value = "";
+            document.getElementById('firma').style.display = "none";
+            flag = 1;
+        }
+        else {
+            alert("Membership Type: Förder-mitglied");      //Conveying Member
+            document.getElementById('firma').style.display = "inline";
+            document.getElementById("topVAl").value = "Natürliche Person";
+            flag = 0;
+        }
     }
     function changeType(val) {
         if (val.length > 0) {
@@ -327,9 +288,6 @@
     function changePayment(num) {
         console.log(num);
         document.getElementById("payment").value = num;
-
-
-        // body...
     }
 
     function changePayment__two(num2) {

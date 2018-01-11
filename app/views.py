@@ -107,13 +107,13 @@ def register():
             return redirect(url_for('register'))
         if (form.persontype.data == 1):
             userObj = User(email=form.email.data, password=passwordTemp, membertype=form.membertype.data,
-                           persontype=form.persontype.data, first_fee=first_fee, fee=form.fee.data,
+                           persontype=form.persontype.data,fee=form.fee.data,
                            company=form.company.data, firstname=form.firstname.data, lastname=form.lastname.data,
                            bday=form.bday.data, road=form.road.data, town=form.town.data, postcode=form.postcode.data,
                            phone=form.phone.data, mobile=form.mobile.data)
         else:
             userObj = User(email=form.email.data, password=passwordTemp, membertype=form.membertype.data,
-                           persontype=form.persontype.data, first_fee=first_fee, fee=form.fee.data,
+                           persontype=form.persontype.data, fee=form.fee.data,
                            firstname=form.firstname.data, lastname=form.lastname.data,
                            bday=form.bday.data, road=form.road.data, town=form.town.data, postcode=form.postcode.data,
                            phone=form.phone.data, mobile=form.mobile.data)

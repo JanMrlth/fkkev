@@ -59,6 +59,7 @@ Project Structure
           └── placeholder.home.html
   ```
 
+Python Interpreter - 2.7 Preffered
 
   '''
   Notes: pip install https://github.com/mitsuhiko/flask/tarball/master - Alembic

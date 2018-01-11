@@ -35,6 +35,7 @@ class User(db.Model):
     postcode = db.Column(db.Integer,nullable=False)
     phone = db.Column(db.Integer)
     mobile = db.Column(db.Integer,nullable=False)
+    image_url = db.Column(db.String(500),nullable=True)
     
     def avatar(self, size):   # https://en.gravatar.com/site/implement/ and https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-vi-profile-page-and-avatars
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()

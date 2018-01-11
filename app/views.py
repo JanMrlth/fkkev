@@ -1,7 +1,8 @@
 # coding=utf-8
 import base64
-
+import urllib2
 import bcrypt, string, random
+import mimetypes, urllib2
 import math
 
 import datetime
@@ -36,6 +37,18 @@ chars = (string.letters + string.digits + string.punctuation)
 def sendAcceptancemail(user_id,selected=True):
     #TODO: Yet to do
     return redirect(url_for('index'))
+
+def is_image_url(url):
+    check = url[:4]
+    check2 = url[:5]
+    if check == '.jpg' or check == '.png' or check2 == '.jpeg':
+        ret = urllib2.urlopen(url)
+        if url.status == 200:
+            return True
+        else:
+            return False
+    else:
+        return False
 
 @app.route('/', methods=['GET'])
 def index():

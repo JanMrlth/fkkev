@@ -260,8 +260,10 @@ def reject_user(confirmation_code):
 
 @app.route('/forgot')
 def forgot():
-    form = ForgotForm(request.form)
-    return render_template('forms/forgot.html', form=form)
+    form = ForgotForm()
+    if form.validate_on_submit():
+        email = form.email.data
+
 
 # Error handlers.
 

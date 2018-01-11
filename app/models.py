@@ -48,6 +48,7 @@ class User(db.Model):
     bankdetails = db.relationship('Bankdetails', backref='user',lazy='dynamic')
     confirmed = db.Column(db.Boolean,default=False)
     confirmation = db.relationship("Confirmation", backref="User",lazy='dynamic')
+    forgot = db.relationship("Forgotpassword", backref="User", lazy='dynamic')
 
 class Bankdetails(db.Model):
     id = db.Column(db.Integer, primary_key=True,autoincrement=True)
@@ -67,7 +68,11 @@ class Confirmation(db.Model):
     id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     confirmation_code = db.Column(db.String(300),nullable=False,unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    
+
+class Forgotpassword(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    forgot_code = db.Column(db.String(300),nullable=False,unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 ##############  Pictures & References  ##############  
 
 ### Table to link multiple pictures to multiple posts

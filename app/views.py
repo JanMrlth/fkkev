@@ -1,3 +1,4 @@
+# coding=utf-8
 import base64
 
 import bcrypt, string, random
@@ -6,7 +7,7 @@ import math
 import datetime
 from flask_login import login_user, login_required, current_user, logout_user
 
-from app import app, db
+from app import app, db, mail
 from flask import Flask, render_template, request, redirect, url_for, flash
 import logging
 from logging import Formatter, FileHandler
@@ -25,7 +26,7 @@ cipher = AES.new(secret_key)
 # ----------------------------------------------------------------------------#
 # Controllers.
 # ----------------------------------------------------------------------------#
-from app.models import User, Bankdetails
+from app.models import User, Bankdetails, Confirmation
 
 memberType = ['']
 
@@ -136,14 +137,60 @@ def register():
         db.session.add(bankObj)
         db.session.commit()
 
+        endl = '\n\n'
         # Sending Email
-        msg = Message('Anmeldung Frankfurter Kelterei Kultur e.V.', sender=ADMINS[0], recipients=ADMINS)
-        msg.body = 'Halle '+userObj.firstname + '\n\n';
-        msg.body += 'Wir freuen über dein Interesse an der Frankfurter Kelterei Kultur! Du hast folgende Daten für die Anmeldungübermittelt. Aus Gründen des Datenschutzes, musst du diese Daten ein zweites Mal aktiv bestätigen (double opt-in):'
-        msg.body += 'Mitgliedsart: ' + userObj.membertype
-
-        flash('Registered Id Successfully','success')
+        msg = Message('Anmeldung Frankfurter Kelterei Kultur e.V.', sender=ADMINS[0], recipients=[userObj.email])
+        msg.body = 'Halle '+userObj.firstname + endl
+        msg.body += 'Wir freuen über dein Interesse an der Frankfurter Kelterei Kultur! Du hast folgende Daten für die Anmeldungübermittelt. Aus Gründen des Datenschutzes, musst du diese Daten ein zweites Mal aktiv bestätigen (double opt-in):' + endl
+        msg.body += 'Mitgliedsart: ' + userObj.membertype + endl
+        msg.body += 'Firma:' + userObj.company + endl
+        msg.body += 'Name: ' + (userObj.firstname + ' ' + userObj.lastname).title() + endl
+        msg.body += 'Addresse: '+ userObj.road + endl + 'Zipcode: ' + userObj.postcode + endl + 'City: '+ userObj.town
+        msg.body += 'Alter: ' + userObj.bday.strftime("%Y-%m-%d") + endl*3
+        msg.body += 'Kontodaten' + endl*4 + '================='
+        msg.body += 'Kontoinhaber :' + bankObj.account_holder + endl
+        msg.body += 'IBAN :' +  bankObj.iban_visible + endl
+        msg.body += 'BIC :' + bankObj.bic_visible + endl
+        msg.body += 'Monatsbeitrag :' + userObj.fee + '€' + endl
+        msg.body += 'Please confirm the correctness of the data by clicking on the following link:' + endl
+        chars = (string.letters + string.digits + string.punctuation)
+        confirmationSequence = ''.join((random.choice(chars)) for x in range(250))
+        while Confirmation.query.filter_by(confirmation_code=confirmationSequence).count() > 0:
+            confirmationSequence = ''.join((random.choice(chars)) for x in range(250))
+        msg.body += app.config['BASE_URL'] + 'verifyaccount/' + confirmationSequence + endl
+        msg.body += 'Löschen der Anmeldung ' + endl
+        msg.body += app.config['BASE_URL'] + 'deleteaccount/' + confirmationSequence + endl
+        msg.body += 'Beste Grüße'
+        mail.send(msg)
+        flash('Registered Id Successfully! Please verify using link sent to your email','success')
         return redirect(url_for('index'))
+
+@app.route('/verifyaccount/<confirmation_sequence>')
+def confirm_account(confirmation_sequence):
+    confirmObj = Confirmation.query.filter_by(confirmation_code=confirmation_sequence)
+    if confirmObj == None:
+        #Invalid Code
+        flash('Incorrect Validation Code','warning')
+        return redirect(url_for('index'))
+    confirmObj.user_id.confirmed = True
+    db.session.add(confirmObj)
+    db.session.commit()
+    flash('User Validated Successfully','success')
+    return redirect(url_for('index'))   #Will Change this to profile Page
+
+@app.route('/deleteaccount/<deletion_sequence>')
+def delete_account(deletion_sequence):
+    confirmObj = Confirmation.query.filter_by(confirmation_code=deletion_sequence)
+    if confirmObj == None:
+        # Invalid Code
+        flash('Incorrect Validation Code', 'warning')
+        return redirect(url_for('index'))
+    confirmObj.user_id.confirmed = True
+    db.session.delete(confirmObj.user_id)
+    db.session.delete(confirmObj)
+    db.session.commit()
+    flash('User Deleted Successfully', 'warning')
+    return redirect(url_for('index'))
 
 @app.route('/forgot')
 def forgot():
@@ -151,7 +198,6 @@ def forgot():
     return render_template('forms/forgot.html', form=form)
 
 # Error handlers.
-
 
 @app.errorhandler(500)
 def internal_error(error):

@@ -27,7 +27,8 @@ MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
 # administrator list
 ADMINS = ['sanudatta12@gmail.com']
-
+PROTOCOL = 'http://'
+BASE_URL =  PROTOCOL + 'www.xyz.com/'
 
 #AES
 PWS_SIZE = 10

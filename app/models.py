@@ -35,8 +35,11 @@ class User(db.Model):
 
     bankdetails = db.relationship('Bankdetails', backref='user',lazy='dynamic')
 
+    confirmed = db.Column(db.Boolean,default=False)
+    confirmation = db.relationship("Confirmation", uselist=False, backref="User")
+
 class Bankdetails(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     account_holder = db.Column(db.String(200), nullable=False)
     account_no = db.Column(db.Integer,nullable=False)
     iban = db.Column(db.String(200), unique=True,nullable=False)
@@ -47,6 +50,11 @@ class Bankdetails(db.Model):
     sepa_date = db.Column(db.DateTime,default=datetime.datetime.utcnow)
     sepa_ref = db.Column(db.String(200),nullable=False)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
+
+class Confirmation(db.Model):
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    confirmation_code = db.Column(db.String(300),nullable=False,unique=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 # class subscription(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)

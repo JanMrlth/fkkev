@@ -62,7 +62,7 @@ class RegisterForm(Form):
     # blz = IntegerField(       #Bank Code
     #     'Blz',validators=[DataRequired()]
     # )
-    fee = RadioField(
+    monthlyfee = RadioField(
         [Required()],
         choices=[(3, '3€'), (6, '6€'),(30,'30€')], default=3
     )

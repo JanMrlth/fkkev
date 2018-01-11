@@ -7,6 +7,7 @@ import math
 
 import datetime
 from flask_login import login_user, login_required, current_user, logout_user
+from wtforms import ValidationError
 
 from app import app, db, mail
 from flask import Flask, render_template, request, redirect, url_for, flash
@@ -33,10 +34,12 @@ memberType = ['']
 endl = '\n\n'
 chars = (string.letters + string.digits + string.punctuation)
 
-#Custom Functions
-def sendAcceptancemail(user_id,selected=True):
-    #TODO: Yet to do
+
+# Custom Functions
+def sendAcceptancemail(user_id, selected=True):
+    # TODO: Yet to do
     return redirect(url_for('index'))
+
 
 def is_image_url(url):
     check = url[:4]
@@ -50,9 +53,10 @@ def is_image_url(url):
     else:
         return False
 
+
 @app.route('/', methods=['GET'])
 def index():
-    form = LoginForm(request.form)
+    form = LoginForm()
     return render_template('forms/login.html', form=form)
 
 
@@ -69,9 +73,7 @@ def login():
             db.session.add(userData)
             db.session.commit()
             login_user(userData, remember=True)
-
-    return redirect(url_for('index'))
-
+    return render_template('forms/login.html',form=form)
 
 @app.route('/logout', methods=["GET"])
 @login_required
@@ -92,7 +94,7 @@ def logout_check():
     return redirect('/')
 
 
-@app.route('/register',methods=['GET','POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
     if form.validate_on_submit() and (form.membertype.data in [1, 2]) and (form.persontype.data in [1.2]):
@@ -107,7 +109,7 @@ def register():
             return redirect(url_for('register'))
         if (form.persontype.data == 1):
             userObj = User(email=form.email.data, password=passwordTemp, membertype=form.membertype.data,
-                           persontype=form.persontype.data,fee=form.fee.data,
+                           persontype=form.persontype.data, fee=form.fee.data,
                            company=form.company.data, firstname=form.firstname.data, lastname=form.lastname.data,
                            bday=form.bday.data, road=form.road.data, town=form.town.data, postcode=form.postcode.data,
                            phone=form.phone.data, mobile=form.mobile.data)
@@ -150,7 +152,7 @@ def register():
         else:
             bankObj.sepa_ref += 'FoeM'
         bankObj.sepa_ref += iban_visible[:6]
-        bankObj.sepa_ref += str((5-len(str(rows)))*'0') + str(rows)
+        bankObj.sepa_ref += str((5 - len(str(rows))) * '0') + str(rows)
         bankObj.user = userObj;
         db.session.add(userObj)
         db.session.add(bankObj)
@@ -158,16 +160,16 @@ def register():
 
         # Sending Email
         msg = Message('Anmeldung Frankfurter Kelterei Kultur e.V.', sender=ADMINS[0], recipients=[userObj.email])
-        msg.body = 'Halle '+userObj.firstname + endl
+        msg.body = 'Halle ' + userObj.firstname + endl
         msg.body += 'Wir freuen über dein Interesse an der Frankfurter Kelterei Kultur! Du hast folgende Daten für die Anmeldungübermittelt. Aus Gründen des Datenschutzes, musst du diese Daten ein zweites Mal aktiv bestätigen (double opt-in):' + endl
         msg.body += 'Mitgliedsart: ' + userObj.membertype + endl
         msg.body += 'Firma:' + userObj.company + endl
         msg.body += 'Name: ' + (userObj.firstname + ' ' + userObj.lastname).title() + endl
-        msg.body += 'Addresse: '+ userObj.road + endl + 'Zipcode: ' + userObj.postcode + endl + 'City: '+ userObj.town
-        msg.body += 'Alter: ' + userObj.bday.strftime("%Y-%m-%d") + endl*3
-        msg.body += 'Kontodaten' + endl*4 + '================='
+        msg.body += 'Addresse: ' + userObj.road + endl + 'Zipcode: ' + userObj.postcode + endl + 'City: ' + userObj.town
+        msg.body += 'Alter: ' + userObj.bday.strftime("%Y-%m-%d") + endl * 3
+        msg.body += 'Kontodaten' + endl * 4 + '================='
         msg.body += 'Kontoinhaber :' + bankObj.account_holder + endl
-        msg.body += 'IBAN :' +  bankObj.iban_visible + endl
+        msg.body += 'IBAN :' + bankObj.iban_visible + endl
         msg.body += 'BIC :' + bankObj.bic_visible + endl
         msg.body += 'Monatsbeitrag :' + userObj.fee + '€' + endl
         msg.body += 'Please confirm the correctness of the data by clicking on the following link:' + endl
@@ -179,26 +181,27 @@ def register():
         msg.body += app.config['BASE_URL'] + 'deleteaccount/' + confirmationSequence + endl
         msg.body += 'Beste Grüße'
         mail.send(msg)
-        confirmobj = Confirmation(confirmation_code=confirmationSequence,user=userObj)
+        confirmobj = Confirmation(confirmation_code=confirmationSequence, user=userObj)
         db.session.add(confirmationSequence)
         db.session.commit()
-        flash('Registered Id Successfully! Please verify using link sent to your email','success')
+        flash('Registered Id Successfully! Please verify using link sent to your email', 'success')
         return redirect(url_for('index'))
 
-    return redirect('forms/register.html')
+    return render_template('forms/register.html',form=form)
 
-@app.route('/verifyaccount/<confirmation_sequence>',methods=['GET'])
+
+@app.route('/verifyaccount/<confirmation_sequence>', methods=['GET'])
 def confirm_account(confirmation_sequence):
     confirmObj = Confirmation.query.filter_by(confirmation_code=confirmation_sequence)
     if confirmObj == None:
-        #Invalid Code
-        flash('Incorrect Validation Code','warning')
+        # Invalid Code
+        flash('Incorrect Validation Code', 'warning')
         return redirect(url_for('index'))
     confirmObj.user_id.confirmed = True
     db.session.add(confirmObj)
     db.session.commit()
 
-    #Sending Email to the Admin
+    # Sending Email to the Admin
     msg = Message('Mitgliedsanmeldung von Website', sender=ADMINS[0], recipients=[ADMINS[0]])
     msg.body = 'Folgende Mitgliedsdaten wurden in unserem Anmeldformular eingegeben und per E-Mail bestätigt: '
     userObj = confirmObj.user_id
@@ -218,10 +221,11 @@ def confirm_account(confirmation_sequence):
     msg.body += 'Antrag ablehnen::' + endl
     msg.body += app.config['BASE_URL'] + 'rejectuser/' + confirmation_sequence
     mail.send(msg)
-    flash('User Validated Successfully!','success')
-    return redirect(url_for('index'))   #Will Change this to profile Page
+    flash('User Validated Successfully!', 'success')
+    return redirect(url_for('index'))  # Will Change this to profile Page
 
-@app.route('/deleteaccount/<deletion_sequence>',methods=['GET'])
+
+@app.route('/deleteaccount/<deletion_sequence>', methods=['GET'])
 def delete_account(deletion_sequence):
     confirmObj = Confirmation.query.filter_by(confirmation_code=deletion_sequence)
     if confirmObj == None:
@@ -235,63 +239,68 @@ def delete_account(deletion_sequence):
     flash('User Deleted Successfully', 'warning')
     return redirect(url_for('index'))
 
+
 @login_required
-@app.route('/acceptuser/<confirmation_code>',methods=['GET'])
+@app.route('/acceptuser/<confirmation_code>', methods=['GET'])
 def accept_request(confirmation_code):
     user = current_user
     if user.admin is not True:
-        flash('Admin Access required','warning')
+        flash('Admin Access required', 'warning')
         return redirect(url_for('logout'))
     confirmObj = Confirmation.query.filter_by(confirmation_code=confirmation_code).first()
     if confirmObj is None:
-        flash('Wrong Acceptance Code','error')
-        return redirect(url_for('index')) # Or any Other
+        flash('Wrong Acceptance Code', 'error')
+        return redirect(url_for('index'))  # Or any Other
     confirmObj.user_id.confirmed = True
     sendAcceptancemail(confirmObj.user_id.id)
     db.session.add(confirmObj.user_id)
     db.session.delete(confirmObj)
     db.session.commit()
-    flash('User Accepted to the Organisation','success')
+    flash('User Accepted to the Organisation', 'success')
     return redirect(url_for('index'))
 
 
 @login_required
-@app.route('/rejectuser/<confirmation_code>',methods=['GET'])
+@app.route('/rejectuser/<confirmation_code>', methods=['GET'])
 def reject_user(confirmation_code):
     user = current_user
     if user.admin is not True:
-        flash('Admin Access required','warning')
+        flash('Admin Access required', 'warning')
         return redirect(url_for('logout'))
     confirmObj = Confirmation.query.filter_by(confirmation_code=confirmation_code).first()
     if confirmObj is None:
-        flash('Wrong Acceptance Code','error')
-        return redirect(url_for('index')) # Or any Other
+        flash('Wrong Acceptance Code', 'error')
+        return redirect(url_for('index'))  # Or any Other
 
-    sendAcceptancemail(confirmObj.user_id.id,False)
+    sendAcceptancemail(confirmObj.user_id.id, False)
     db.session.delete(confirmObj.user_id)
     db.session.delete(confirmObj)
     db.session.commit()
-    flash('User Rejected from the Organisation','warning')
+    flash('User Rejected from the Organisation', 'warning')
     return redirect(url_for('index'))
 
-@app.route('/forgot',methods=['GET','POST'])
+
+@app.route('/forgot', methods=['GET', 'POST'])
 def forgot():
     form = ForgotForm()
     if form.validate_on_submit():
         email = form.email.data
         userObj = User.query.filter_by(email=email)
         if userObj is None:
-            flash('Wrong Email Id Provided! Please signup first.','error')
+            flash('Wrong Email Id Provided! Please signup first.', 'error')
             return redirect(url_for('index'))
         reset_token = ''.join((random.choice(chars)) for x in range(250))
-        forgotobj = Forgotpassword(forgot_code=reset_token,user=userObj)
+        forgotobj = Forgotpassword(forgot_code=reset_token, user=userObj)
         db.session.add(forgotobj)
         msg = Message('Password Reset Email.', sender=ADMINS[0], recipients=[email])
-        msg.body = 'Click the Below Link to Reset Password ' + endl + app.config['BASE_URL'] + '/resetpassword/' + reset_token;
+        msg.body = 'Click the Below Link to Reset Password ' + endl + app.config[
+            'BASE_URL'] + '/resetpassword/' + reset_token;
         mail.send(msg)
-        flash('Reset Password Mail sent to your Email Id!','success')
+        flash('Reset Password Mail sent to your Email Id!', 'success')
         return redirect(url_for('index'))
     return render_template('forms/forgot.html')
+
+
 # Error handlers.
 
 @app.errorhandler(500)
@@ -303,6 +312,11 @@ def internal_error(error):
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('errors/404.html'), 404
+
+
+@app.route('/test')
+def test():
+    return render_template('forms/login.html')
 
 
 if not app.debug:

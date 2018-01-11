@@ -1,14 +1,391 @@
-{% extends 'layouts/form.html' %}
-{% block title %}Register{% endblock %}
-{% block content %}
-  <form method="post" class="form">
-    <h3 class="form-heading">Register <a href="{{ url_for('home') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
-    {{ form.name(class_ = 'form-control first-input', placeholder = form.name.label.text, required = true, autofocus = true) }}
-    {{ form.email(class_ = 'form-control', placeholder = form.email.label.text, required = true) }}
-    {{ form.password(class_ = 'form-control', placeholder = form.password.label.text, required = true) }}
-    {{ form.confirm(class_ = 'form-control last-input', placeholder = form.confirm.label.text, required = true) }}
-    <p class="pull-left"><a href="{{ url_for('login') }}">Login</a></p>
-    <input type="submit" value="Register" class="btn btn-primary btn-lg btn-block"  disabled>
-    <p>You must add database as well as Flask-Login to enable user management. See the <a href="http://www.realpython.com">Real Python</a> course for more info!</p>
-  </form>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Register </title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="register-style.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-fixed-top navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">FKKeV</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div><!-- /.nav-collapse -->
+    </div><!-- /.container -->
+</nav>
+<div class="container">
+    <!--     <div class="jumbotron">
+                <h1 style="font-family: 'Josefin Sans', sans-serif;
+    ">Frankfurter Kelterei Kultur eV</h1>
+                <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p>
+              </div> -->
+    <form>
+        <div class="container__rigisterForm" style=" margin-top: 80px;     box-shadow: 5px 10px #888888;">
+            <div class="registerForm__header">
+                <h1 class="registerForm__text "><b>Page 1 of 4</b></h1>
+            </div>
+            <div class="registerForm__footer" id="one">
+
+                <h3><b>Personal Details</b></h3>
+                <div class="form-check" style="display: inline;">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                           value="option1" checked onclick="showType1('firma')">
+                    <label class="form-check-label" for="exampleRadios1">
+                        &nbsp;Ordentliches Mitglied
+                    </label>
+                </div>
+                <div class="form-check" style="display: inline;">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
+                           value="option2" onclick="showType2('firma')">
+                    <label class="form-check-label" for="exampleRadios2">
+                        &nbsp;Förder-mitglied
+                    </label>
+                </div>
+
+
+                <!--                   <input type="text" name="" placeholder="Firma"  onchange="changeType(this.value)"> <br> <br>
+                 -->
+
+                <br><br>
+                <div id="firma" style="left: 0px; position: relative;">
+                    <div class="alert alert-success">
+                        <h5 id="natPer"><b>Natürliche Person</b></h5>
+                        <h5 id="jurPer"><b>Juristische Person</b></h5>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cName" style="float: left;">Firma</label>
+                        <input type="text" class="form-control" id="cNAme" aria-describedby="emailHelp"
+                               placeholder="Company Name" onchange="changeType(this.value)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fName" style="float: left;">Vorname</label>
+                    <input type="text" class="form-control" id="fName" aria-describedby="emailHelp" placeholder="Peter">
+                </div>
+                <div class="form-group">
+                    <label for="lName" style="float: left;">Nachname</label>
+                    <input type="text" class="form-control" id="lName" aria-describedby="emailHelp" placeholder="Huan">
+                </div>
+                <div class="form-group" id="bDay_toggle">
+                    <label for="bDay" style="float: left;">Birthday</label>
+                    <input type="date" class="form-control" id="bDay" aria-describedby="emailHelp"
+                           placeholder="DD-MM-YY">
+                </div>
+
+                <div class="form-group">
+                    <label for="mail" style="float: left;">Email ID</label>
+                    <input type="email" class="form-control" id="mail" aria-describedby="emailHelp"
+                           placeholder="yourname@domamin.com">
+                </div>
+                <div class="form-group">
+                    <label for="sName" style="float: left;">Straße & Nr</label>
+                    <input type="text" class="form-control" id="sName" aria-describedby="emailHelp"
+                           placeholder="Letzter Hasenpfad">
+                </div>
+                <div class="form-group">
+                    <label for="plz" style="float: left;">Zip Code</label>
+                    <input type="number" class="form-control" id="plz" aria-describedby="emailHelp" placeholder="12345"
+                           onchange="getCity(this.value)">
+                </div>
+                <div class="form-group">
+                    <label for="city" style="float: left;">Stadt</label>
+                    <input type="text" class="form-control" id="city" aria-describedby="emailHelp"
+                           placeholder="City Name">
+                </div>
+                <input type="text" placeholder="VAL" id="topVAl">
+
+                <br>
+                <button class="btn btn-success" onclick="show('one','two')" type="button">Continue</button>
+
+            </div>
+            <div>
+                <div class="registerForm__header">
+                    <h1 class="registerForm__text "><b>Page 2 of 4</b></h1>
+                </div>
+                <div class="registerForm__footer" id="two">
+                    <h3><b>Voluntary Data</b></h3>
+                    <br><br>
+                    <div class="form-group">
+                        <label for="phoneNumber" style="float: left;">Telefonnummer</label>
+                        <input type="text" class="form-control" id="phoneNumber" aria-describedby="emailHelp"
+                               placeholder="1234567890">
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber__2" style="float: left;">Handynummer</label>
+                        <input type="text" class="form-control" id="phoneNumber__2" aria-describedby="emailHelp"
+                               placeholder="1234567890">
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber__2" style="float: left;">Upload a profile photo</label>
+                        <input type="file" class="form-control" id="phoneNumber__2" aria-describedby="emailHelp"
+                               placeholder="1234567890">
+                    </div>
+                    <br> <br>
+
+                    <button class="btn btn-success" onclick="show('two','three')" type="button">Continue</button>
+                </div>
+                <div class="registerForm__header">
+                    <h1 class="registerForm__text "><b>Bank details</b></h1>
+                </div>
+                <div class="registerForm__footer" id="three">
+                    <h3><b>Please fill the details</b></h3>
+                    <br><br>
+                    <div class="form-group">
+                        <label for="bName" style="float: left;">Bank Account Name</label>
+                        <input type="text" class="form-control" id="bName">
+                    </div>
+                    <div class="form-group">
+                        <label for="iban" style="float: left;">IBAN</label>
+                        <input type="text" class="form-control" id="iban" onchange="genBIC(this.value)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bic" style="float: left;">BIC</label>
+                        <input type="text" class="form-control" id="bic">
+                    </div>
+
+
+                    <div id="flag_one">
+                        <div class="form-group">
+                            <label for="payment" style="float: left;">Monthly Payment</label>
+                            <input type="number" class="form-control" id="payment" value="9">
+                        </div>
+                        <div class="form-check" style="display: inline;">
+                            <input class="form-check-input" type="radio" name="exampleRadios-1" id="exampleRadios1-p"
+                                   value="option1" checked onclick="changePayment(3)">
+                            <label class="form-check-label" for="exampleRadios1-p"">
+                            &nbsp;3 Euro
+                            </label>
+                        </div>
+                        <div class="form-check" style="display: inline;">
+                            <input class="form-check-input" type="radio" name="exampleRadios-1" id="exampleRadios2-p"
+                                   value="option2" onclick="changePayment(6)">
+                            <label class="form-check-label" for="exampleRadios2-p"">
+                            &nbsp;6 Euro
+                            </label>
+                        </div>
+                        <div class="form-check" style="display: inline;">
+                            <input class="form-check-input" type="radio" name="exampleRadios-1" id="exampleRadios3-p"
+                                   value="option2" onclick="changePayment(30)">
+                            <label class="form-check-label" for="exampleRadios3-p" ">
+                            &nbsp;30 Euro
+                            </label>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div id="flag_two">
+
+
+                        <div class="form-group">
+                            <label for="paymen__twot" style="float: left;">Monthly Payment</label>
+                            <input type="number" class="form-control" id="payment__two" value="50">
+                        </div>
+                        <div class="form-check" style="display: inline;">
+                            <input class="form-check-input" type="radio" name="exampleRadios-1" id="exampleRadios1-o"
+                                   value="option1" checked onclick="changePayment__two(25)">
+                            <label class="form-check-label" for="exampleRadios1-o">
+                                &nbsp;25 Euro
+                            </label>
+                        </div>
+                        <div class="form-check" style="display: inline;">
+                            <input class="form-check-input" type="radio" name="exampleRadios-1" id="exampleRadios2-o"
+                                   value="option2" onclick="changePayment__two(35)">
+                            <label class="form-check-label" for="exampleRadios2-o">
+                                &nbsp;35 Euro
+                            </label>
+                        </div>
+                        <div class="form-check" style="display: inline;">
+                            <input class="form-check-input" type="radio" name="exampleRadios-1" id="exampleRadios3-o"
+                                   value="option2" onclick="changePayment__two(100)">
+                            <label class="form-check-label" for="exampleRadios3-o" o>
+                                &nbsp;100 Euro
+                            </label>
+                        </div>
+                        <br>
+                    </div>
+                    <br>
+                    <button class="btn btn-success" onclick="show('three','four')" type="button">Continue</button>
+
+                </div>
+
+                <div class="registerForm__header">
+                    <h1 class="registerForm__text "><b>Page 4 of 4</b></h1>
+                </div>
+                <div class="registerForm__footer" id="four">
+                    <h3><b>All the details wiil be shown here for confrmation</b></h3>
+                    <!--               <div class="row">
+                                     <div class="col-md-6">
+                                        <b>Mitgliedsdaten</b>
+                                        <ul id="details_one">
+
+                                           <li> Nachname:</li>
+                                           <li> Straße:</li>
+                                           <li> PLZ:</li>
+                                           <li> Ort:</li>
+                                           <li> E-Mail:</li>
+                                           <li> E-Mail:</li>
+                                           <li>Mobil:</li>
+
+                                        </ul>
+                                     </div>
+                                     <div class="col-md-6">
+                                        <b>Finanzdaten</b>
+                                     </div>
+                                  </div> -->
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+    </form>
+</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.13/jquery.mask.js"></script>
+<script type="text/javascript">
+    var flag = 1;
+    function show(str1, str2) {
+        console.log(str1, str2);
+        // body...
+        var showDiv = document.getElementById(str2);
+        var hideDiv = document.getElementById(str1);
+        hideDiv.style.display = "none";
+        showDiv.style.display = "block";
+        if (flag == 1) {
+            console.log(flag);
+
+            document.getElementById("flag_one").style.display = "inline";
+
+        }
+        else {
+            console.log(flag);
+
+            document.getElementById("flag_two").style.display = "inline";
+        }
+        document.getElementById("bName").value = document.getElementById("fName").value + " " + document.getElementById("lName").value;
+
+    }
+    function showType1(str_1) {
+        // body...
+        alert("Membership Type: Ordentliches Mitglied");
+        document.getElementById("topVAl").value = "";
+        document.getElementById(str_1).style.display = "none";
+        flag = 1;
+
+    }
+    function showType2(str) {
+        // body...
+        alert("Membership Type: Förder-mitglied");
+        document.getElementById(str).style.display = "inline";
+        document.getElementById("topVAl").value = "Natürliche Person";
+        flag = 0;
+
+    }
+    function changeType(val) {
+        if (val.length > 0) {
+            document.getElementById("natPer").style.display = "none";
+            document.getElementById("jurPer").style.display = "inline";
+            alert("Changed to: Juristische Person");
+            document.getElementById("topVAl").value = "Juristische Person";
+            document.getElementById("bDay_toggle").style.display = "none";
+            console.log(val.length)
+        }
+        else {
+            console.log(val);
+            document.getElementById("jurPer").style.display = "none";
+            document.getElementById("natPer").style.display = "inline";
+            alert("Changed to: Natürliche Person");
+            document.getElementById("topVAl").value = "Natürliche Person";
+            document.getElementById("bDay_toggle").style.display = "block";
+
+        }
+        // body...
+    }
+
+    function changePayment(num) {
+        console.log(num);
+        document.getElementById("payment").value = num;
+
+
+        // body...
+    }
+
+    function changePayment__two(num2) {
+        // body...
+        document.getElementById("payment__two").value = num2;
+
+    }
+
+
+    $(document).ready(function () {
+        $('#iban').mask('DE00 0000 0000 0000 0000 00', {
+            placeholder: '____ ____ ____ ____ ____ __'
+        });
+    });
+    //
+    var valBIC = 0;
+    function genBIC(str) {
+        document.getElementById("bic").disabled = true;
+
+        console.log(str);
+        str = str.replace(/ /g, "");
+
+        // str=str.replace(" ","");
+        console.log(str);
+
+        // body...
+        $.ajax({
+            type: "GET",    //GET or POST
+            url: 'https://openiban.com/validate/' + str + '?getBIC=true',    // Location of the service
+            dataType: "json",   //Expected data format from server
+            processdata: true   //True or False
+        }).done(function (data) {
+            console.log(data);
+            console.log(data.bankData.bic);
+            // document.getElementById("bic").disabled = false;
+            valBIC = data.bankData.bic;
+            document.getElementById("bic").value = valBIC;
+            document.getElementById("bic").disabled = false;
+        });
+    }
+    function getCity(zip) {
+        // body...
+        document.getElementById("city").disabled = true;
+
+        $.ajax({
+            type: "GET",    //GET or POST
+            url: 'http://api.zippopotam.us/DE/' + zip,    // Location of the service
+            dataType: "json",   //Expected data format from server
+            processdata: true   //True or False
+        }).done(function (data) {
+            console.log(data.places[0]);
+            places = data['places'][0];
+            document.getElementById("city").disabled = false;
+            document.getElementById("city").value = places['place name'];
+            console.log("city is:");
+        });
+    }
+</script>
+</html>

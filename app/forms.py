@@ -1,7 +1,7 @@
 # coding=utf-8
 from flask_wtf import Form
 from wtforms import TextField, PasswordField, StringField, IntegerField, DateField, RadioField
-from wtforms.validators import DataRequired, EqualTo, Length, email, NumberRange, Required
+from wtforms.validators import DataRequired, EqualTo, Length, email, NumberRange, Required, Email
 
 
 # Set your classes here.
@@ -13,7 +13,7 @@ class RegisterForm(Form):
         choices=[(1, 'Ordinary Member'), (2, 'Sustaining Member')], default=1
     )
     email = StringField(
-        'Email', validators=[DataRequired(), Length(min=6, max=254)]
+        'Email', validators=[DataRequired(), Length(min=6, max=254),Email()]
     )
     password = PasswordField(
         'Password', validators=[DataRequired(), Length(min=8, max=100)]
@@ -65,11 +65,11 @@ class RegisterForm(Form):
     )
 
 class LoginForm(Form):
-    email = StringField('Email', [DataRequired(),Length(min=6, max=254),email])
+    email = StringField('Email', [DataRequired(),Length(min=6, max=254),Email()])
     password = PasswordField('Password', [DataRequired()])
 
 
 class ForgotForm(Form):
     email = StringField(
-        'Email', validators=[DataRequired(), Length(min=6, max=254)]
+        'Email', validators=[DataRequired(), Length(min=6, max=254),Email()]
     )

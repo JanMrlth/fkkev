@@ -3,6 +3,11 @@
  */
 
 var flag = 1;
+function unicodeEscape(str) {
+  return str.replace(/[\s\S]/g, function (escape) {
+    return '\\u' + ('0000' + escape.charCodeAt().toString(16)).slice(-4);
+  });
+}
 function show(str1, str2) {
     console.log(str1, str2);
     // body...
@@ -69,7 +74,7 @@ $(document).ready(function () {
             document.getElementById("jurPer").style.display = "none";
             document.getElementById("natPer").style.display = "inline";
             alert("Changed to: Natürliche Person");
-            document.getElementById("topVAl").value = 2 ;  //Natural
+            document.getElementById("topVAl").value = 2;  //Natural
             document.getElementById("bDay_toggle").style.display = "block";
 
         }
@@ -96,28 +101,28 @@ $(document).ready(function () {
         });
     });
 
-    $("#plz").change(function () {
-        document.getElementById("city").disabled = true;
-        zip = document.getElementById("plz").value;
-        $.ajax({
-            type: "GET",    //GET or POST
-            url: 'http://api.zippopotam.us/DE/' + zip,    // Location of the service
-            dataType: "json",   //Expected data format from server
-            processdata: true   //True or False
-        }).done(function (data) {
-            console.log(data.places[0]);
-            places = data['places'][0];
-            document.getElementById("city").disabled = false;
-            document.getElementById("city").value = places['place name'];
-            console.log("city is:");
-        }).error(function (err) {
-            if(err){
-                document.getElementById("city").disabled = false;
-                document.getElementById("city").placeholder = 'Not Found City';
-            }
-        });
-
-    });
+    // $("#plz").change(function () {
+    //     document.getElementById("city").disabled = true;
+    //     zip = document.getElementById("plz").value;
+    //     $.ajax({
+    //         type: "GET",    //GET or POST
+    //         url: 'http://api.zippopotam.us/DE/' + zip,    // Location of the service
+    //         dataType: "json",   //Expected data format from server
+    //         processdata: true   //True or False
+    //     }).done(function (data) {
+    //         console.log(data.places[0]);
+    //         places = data['places'][0];
+    //         document.getElementById("city").disabled = false;
+    //         document.getElementById("city").value = places['place name'];
+    //         console.log("city is:");
+    //     }).error(function (err) {
+    //         if (err) {
+    //             document.getElementById("city").disabled = false;
+    //             document.getElementById("city").placeholder = 'Not Found City';
+    //         }
+    //     });
+    //
+    // });
 });
 //
 var valBIC = 0;

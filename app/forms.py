@@ -20,6 +20,9 @@ class RegisterForm(Form):
     bday = DateField(
         'Bday',
     )
+    road = StringField(
+        'Road', validators=[Length(min=1,max=400)]
+    )
     postcode = IntegerField(
         'Postcode',validators=[DataRequired()]
     )

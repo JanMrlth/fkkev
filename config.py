@@ -18,19 +18,20 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 MIN_FEE = 3
 
 # email server
-MAIL_SERVER = 'smtp.googlemail.com'
-MAIL_PORT = 465
-MAIL_USE_TLS = False
-MAIL_USE_SSL = True
-MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+MAIL_SERVER = 'smtp.gmail.com'
+MAIL_PORT = int(os.environ.get('MAIL_PORT', '465'))
+MAIL_USE_TLS = int(os.environ.get('MAIL_USE_TLS', False))
+MAIL_USE_SSL = int(os.environ.get('MAIL_USE_SSL', True))
+MAIL_USERNAME = os.environ.get('MAIL_USERNAME','sanudatta12@gmail.com')
+MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD','')
+MAIL_SENDER = os.environ.get('MAIL_SENDER', 'Admin<sanudatta12@gmail.com>')
 
 # administrator list
 ADMINS = ['sanudatta12@gmail.com']
 PROTOCOL = 'http://'
-BASE_URL =  PROTOCOL + 'www.xyz.com/'
+BASE_URL = PROTOCOL + 'www.xyz.com/'
 
-#AES
+# AES
 PWS_SIZE = 10
 BLOCK_SIZE = 16
 PADDING = '{'

@@ -24,6 +24,10 @@
                         <li>{{ error }}</li>{% endfor %}</ul>
                 {% endif %}
             </div>
+            <div class="form-group">
+                {{ form.confirm.label }}
+                {{ form.confirm(class = 'form-control', placeholder = "Enter Your password again", required = true,id="password2") }}
+            </div>
             {{ form.reset_token(class="hidden",value=reset_token) }}
             <button class="btn btn-success" type="submit">Reset</button>
         </form>

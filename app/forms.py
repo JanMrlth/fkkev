@@ -1,7 +1,8 @@
 # coding=utf-8
 from flask_wtf import Form
 from wtforms import TextField, PasswordField, StringField, IntegerField, DateField, RadioField
-from wtforms.validators import DataRequired, EqualTo, Length, email, NumberRange, Required, Email,URL
+from wtforms.validators import DataRequired, EqualTo, Length, email, NumberRange, Required, Email, URL, Optional
+
 
 class RegisterForm(Form):
     membertype = RadioField(
@@ -21,7 +22,7 @@ class RegisterForm(Form):
         'Bday',
     )
     road = StringField(
-        'Road', validators=[Length(min=1,max=400)]
+        'Road', validators=[Length(min=1,max=400),Optional()]
     )
     postcode = IntegerField(
         'Postcode',validators=[DataRequired()]
@@ -33,16 +34,16 @@ class RegisterForm(Form):
         'Persontype',validators=[NumberRange(0,2,message="Person Type is Invalid")]
     )
     company = StringField(
-        'Company',validators=[Length(max=300)]
+        'Company',validators=[Length(max=300),Optional()]
     )
     phone = StringField(
-        'Phone',
+        'Phone',validators=[Optional()]
     )
     mobile = StringField(
-        'Mobile',validators=[DataRequired()]
+        'Mobile',validators=[Optional()]
     )
     image_url = StringField(
-        'Image Url',validators=[URL(message='Image URL is invalid')]
+        'Image Url',validators=[Optional()]
     )
     account_holder = StringField(
         'Accountname',validators=[DataRequired(),Length(min=10,max=200,message="Invalid Account Name")]

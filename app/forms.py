@@ -1,11 +1,7 @@
 # coding=utf-8
 from flask_wtf import Form
 from wtforms import TextField, PasswordField, StringField, IntegerField, DateField, RadioField
-from wtforms.validators import DataRequired, EqualTo, Length, email, NumberRange, Required, Email
-
-
-# Set your classes here.
-
+from wtforms.validators import DataRequired, EqualTo, Length, email, NumberRange, Required, Email,URL
 
 class RegisterForm(Form):
     membertype = RadioField(
@@ -14,14 +10,6 @@ class RegisterForm(Form):
     )
     email = StringField(
         'Email', validators=[DataRequired(), Length(min=6, max=254),Email()]
-    )
-    password = PasswordField(
-        'Password', validators=[DataRequired(), Length(min=8, max=100)]
-    )
-    confirm = PasswordField(
-        'Repeat Password',
-        [DataRequired(),
-        EqualTo('password', message='Passwords must match')]
     )
     firstname = StringField(
         'Firstname', validators=[DataRequired(), Length(min=2,message="Too short First Name")]
@@ -42,24 +30,29 @@ class RegisterForm(Form):
         'Town',validators=[Length(max=400)]
     )
     persontype = IntegerField(
-        'Persontype',validators=[DataRequired(),NumberRange(1,2,message="Person Type is Invalid")]
+        'Persontype',validators=[NumberRange(0,2,message="Person Type is Invalid")]
     )
     company = StringField(
         'Company',validators=[Length(max=300)]
     )
-    phone = IntegerField(
-        'Phone'
+    phone = StringField(
+        'Phone',validators=[Length(min=11,max=15,message="Invalid Phone Number")]
     )
     mobile = IntegerField(
-        'Mobile',validators=[DataRequired()]
+        'Mobile',validators=[DataRequired(),Length(min=10,max=15,message="Invalid Mobile Number")]
+    )
+    image_url = StringField(
+        'Image Url',validators=[URL(message='Image URL is invalid')]
     )
     account_holder = StringField(
         'Accountname',validators=[DataRequired(),Length(min=10,max=200,message="Invalid Account Name")]
     )
-    iban = IntegerField(
-        'Iban',validators=[DataRequired()]
+    iban = StringField(
+        'IBAN',validators=[DataRequired(),Length(min=16,max=25)]
     )
-
+    bic = StringField(
+        'BIC', validators=[DataRequired(), Length(min=9, max=15)]
+    )
     fee = IntegerField(
         'Fee',validators=[DataRequired()]
     )

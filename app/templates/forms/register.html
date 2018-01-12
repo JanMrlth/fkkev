@@ -54,52 +54,45 @@
                 <br><br>
                 <div id="firma" style="left: 0; position: relative;">
                     <div class="alert alert-success">
-                        <h5 id="natPer"><b>Nat&uuml;rliche Person</b></h5>
+                        <h5 id="natPer"><b>Natürliche Person</b></h5>
                         <h5 id="jurPer"><b>Juristische Person</b></h5>
                     </div>
 
                     <div class="form-group">
-                        <label for="cName" style="float: left;">Firma</label>
-                        <input type="text" class="form-control" id="cName" aria-describedby="emailHelp"
-                               placeholder="Company Name" onchange="changeType(this.value)">
+                        {{ form.company.label }}
+                        {{ form.company(class="form-control",id="cName",placeholder="Enter your Company Name") }}
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="fName" style="float: left;">Vorname</label>
-                    <input type="text" class="form-control" id="fName" aria-describedby="emailHelp" placeholder="Peter">
+                    {{ form.firstname(class="form-control",id="fName",placeholder="Peter") }}
                 </div>
                 <div class="form-group">
                     <label for="lName" style="float: left;">Nachname</label>
-                    <input type="text" class="form-control" id="lName" aria-describedby="emailHelp" placeholder="Huan">
+                    {{ form.lastname(class="form-control",id="lName",placeholder="Huan") }}
                 </div>
                 <div class="form-group" id="bDay_toggle">
                     <label for="bDay" style="float: left;">Birthday</label>
-                    <input type="date" class="form-control" id="bDay" aria-describedby="emailHelp"
-                           placeholder="DD-MM-YY">
+                    {{ form.bday(class="form-control",id="bDay",placeholder="DD-MM-YY",type="date") }}
                 </div>
 
                 <div class="form-group">
                     <label for="mail" style="float: left;">Email ID</label>
-                    <input type="email" class="form-control" id="mail" aria-describedby="emailHelp"
-                           placeholder="yourname@domamin.com">
+                    {{ form.lastname(class="form-control",id="mail",placeholder="yourname@domamin.com",type="email") }}
                 </div>
                 <div class="form-group">
-                    <label for="sName" style="float: left;">Straße &amp; Nr</label>
-                    <input type="text" class="form-control" id="sName" aria-describedby="emailHelp"
-                           placeholder="Letzter Hasenpfad">
+                    <label for="sName" style="float: left;">Straße & Nr</label>
+                    {{ form.lastname(class="form-control",id="sName",placeholder="Letzter Hasenpfad") }}
                 </div>
                 <div class="form-group">
                     <label for="plz" style="float: left;">Zip Code</label>
-                    <input type="number" class="form-control" id="plz" aria-describedby="emailHelp" placeholder="12345"
-                           onchange="getCity(this.value)">
+                    {{ form.lastname(class="form-control",id="plz",placeholder="12345",type="number") }}
                 </div>
                 <div class="form-group">
                     <label for="city" style="float: left;">Stadt</label>
-                    <input type="text" class="form-control" id="city" aria-describedby="emailHelp"
-                           placeholder="City Name">
+                    {{ form.lastname(class="form-control",id="city",placeholder="City Name") }}
                 </div>
-                <input type="text" placeholder="VAL" id="topVAl">
-
+                {{ form.persontype(type="number",id="topVAl") }}
                 <br>
                 <button class="btn btn-success" onclick="show('one','two')" type="button">Continue</button>
 
@@ -113,18 +106,15 @@
                     <br><br>
                     <div class="form-group">
                         <label for="phoneNumber" style="float: left;">Telefonnummer</label>
-                        <input type="text" class="form-control" id="phoneNumber" aria-describedby="emailHelp"
-                               placeholder="1234567890">
+                        {{ form.phone(class="form-control",id="phoneNumber",placeholder="49-12345678901") }}
                     </div>
                     <div class="form-group">
                         <label for="phoneNumber__2" style="float: left;">Handynummer</label>
-                        <input type="text" class="form-control" id="phoneNumber__2" aria-describedby="emailHelp"
-                               placeholder="1234567890">
+                        {{ form.mobile(class="form-control",id="phoneNumber__2",placeholder="49-43245612901") }}
                     </div>
                     <div class="form-group">
-                        <label for="phoneNumber__2" style="float: left;">Upload a profile photo</label>
-                        <input type="file" class="form-control" id="phoneNumber__2" aria-describedby="emailHelp"
-                               placeholder="1234567890">
+                        <label for="profile" style="float: left;">Upload a profile photo</label>
+                        {{ form.image_url(class="form-control",id="phoneNumber",placeholder="49-12345678901",type="url") }}
                     </div>
                     <br> <br>
 
@@ -138,23 +128,23 @@
                     <br><br>
                     <div class="form-group">
                         <label for="bName" style="float: left;">Bank Account Name</label>
-                        <input type="text" class="form-control" id="bName">
+                        {{ form.account_holder(class="form-control",id="bName",placeholder="ABC XYZ") }}
                     </div>
                     <div class="form-group">
                         <label for="iban" style="float: left;">IBAN</label>
-                        <input type="text" class="form-control" id="iban" onchange="genBIC(this.value)">
+                        {{ form.iban(class="form-control",id="iban",placeholder="XXXX-XXXX-XXXX-XXXX-XX") }}
                     </div>
 
                     <div class="form-group">
                         <label for="bic" style="float: left;">BIC</label>
-                        <input type="text" class="form-control" id="bic">
+                        {{ form.bic(class="form-control",id="bic",placeholder="XXXXXX") }}
                     </div>
 
 
                     <div id="flag_one">
                         <div class="form-group">
                             <label for="payment" style="float: left;">Monthly Payment</label>
-                            <input type="number" class="form-control" id="payment" value="9">
+                            {{ form.fee(class="form-control",id="payment",value="9",type="number") }}
                         </div>
                         <div class="form-check" style="display: inline;">
                             <input class="form-check-input" type="radio" name="exampleRadios-1" id="exampleRadios1-p"
@@ -220,130 +210,12 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
+        </div>
     </form>
 </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.13/jquery.mask.js"></script>
-<script type="text/javascript">
-    var flag = 1;
-    function show(str1, str2) {
-        console.log(str1, str2);
-        // body...
-        var showDiv = document.getElementById(str2);
-        var hideDiv = document.getElementById(str1);
-        hideDiv.style.display = "none";
-        showDiv.style.display = "block";
-        if (flag == 1) {
-            console.log(flag);
-
-            document.getElementById("flag_one").style.display = "inline";
-
-        }
-        else {
-            console.log(flag);
-
-            document.getElementById("flag_two").style.display = "inline";
-        }
-        document.getElementById("bName").value = document.getElementById("fName").value + " " + document.getElementById("lName").value;
-
-    }
-    function showType(selector) {
-        console.log(selector);
-        if (selector == 1) {
-            // body...
-            alert("Membership Type: Ordentliches Mitglied");    //Full Member
-            document.getElementById("topVAl").value = "";
-            document.getElementById('firma').style.display = "none";
-            flag = 1;
-        }
-        else {
-            alert("Membership Type: Förder-mitglied");      //Conveying Member
-            document.getElementById('firma').style.display = "inline";
-            document.getElementById("topVAl").value = "Natürliche Person";
-            flag = 0;
-        }
-    }
-    function changeType(val) {
-        if (val.length > 0) {
-            document.getElementById("natPer").style.display = "none";
-            document.getElementById("jurPer").style.display = "inline";
-            alert("Changed to: Juristische Person");
-            document.getElementById("topVAl").value = "Juristische Person";
-            document.getElementById("bDay_toggle").style.display = "none";
-            console.log(val.length)
-        }
-        else {
-            console.log(val);
-            document.getElementById("jurPer").style.display = "none";
-            document.getElementById("natPer").style.display = "inline";
-            alert("Changed to: Natürliche Person");
-            document.getElementById("topVAl").value = "Natürliche Person";
-            document.getElementById("bDay_toggle").style.display = "block";
-
-        }
-        // body...
-    }
-
-    function changePayment(num) {
-        console.log(num);
-        document.getElementById("payment").value = num;
-    }
-
-    function changePayment__two(num2) {
-        // body...
-        document.getElementById("payment__two").value = num2;
-
-    }
-
-
-    $(document).ready(function () {
-        $('#iban').mask('DE00 0000 0000 0000 0000 00', {
-            placeholder: '____ ____ ____ ____ ____ __'
-        });
-    });
-    //
-    var valBIC = 0;
-    function genBIC(str) {
-        document.getElementById("bic").disabled = true;
-
-        console.log(str);
-        str = str.replace(/ /g, "");
-
-        // str=str.replace(" ","");
-        console.log(str);
-
-        // body...
-        $.ajax({
-            type: "GET",    //GET or POST
-            url: 'https://openiban.com/validate/' + str + '?getBIC=true',    // Location of the service
-            dataType: "json",   //Expected data format from server
-            processdata: true   //True or False
-        }).done(function (data) {
-            console.log(data);
-            console.log(data.bankData.bic);
-            // document.getElementById("bic").disabled = false;
-            valBIC = data.bankData.bic;
-            document.getElementById("bic").value = valBIC;
-            document.getElementById("bic").disabled = false;
-        });
-    }
-    function getCity(zip) {
-        // body...
-        document.getElementById("city").disabled = true;
-
-        $.ajax({
-            type: "GET",    //GET or POST
-            url: 'http://api.zippopotam.us/DE/' + zip,    // Location of the service
-            dataType: "json",   //Expected data format from server
-            processdata: true   //True or False
-        }).done(function (data) {
-            console.log(data.places[0]);
-            places = data['places'][0];
-            document.getElementById("city").disabled = false;
-            document.getElementById("city").value = places['place name'];
-            console.log("city is:");
-        });
-    }
-</script>
+<script type="text/javascript" src="{{ url_for('static',filename='js/register.js') }}"></script>
 </html>

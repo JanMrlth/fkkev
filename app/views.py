@@ -186,7 +186,6 @@ def register():
         db.session.commit()
         flash('Registered Id Successfully! Please verify using link sent to your email', 'success')
         return redirect(url_for('index'))
-
     return render_template('forms/register.html',form=form)
 
 

@@ -56,9 +56,19 @@ def is_image_url(url):
 
 @app.route('/', methods=['GET'])
 def index():
+    user = current_user
+    if user.authenticated == True:
+        return redirect(url_for('profile'))
     form = LoginForm()
     return render_template('forms/login.html', form=form)
 
+@app.route('/profile')
+def profile():
+    if current_user.is_authenticated:
+        return render_template('pages/show-user.html',user=current_user)
+    else:
+        flash('Please Login again!','warning')
+        return redirect(url_for('index'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -292,7 +302,7 @@ def forgot():
             flash('Wrong Email Id Provided! Please signup first.', 'error')
             return redirect(url_for('index'))
         reset_token = ''.join((random.choice(chars)) for x in range(50))
-        forgotobj = Forgotpassword(forgot_code=reset_token, user=userObj)
+        forgotobj = Forgotpassword(forgot_code=reset_token, user_id=userObj)
         db.session.add(forgotobj)
         msg = Message('Password Reset Email.', sender=ADMINS[0], recipients=[email])
         msg.body = 'Click the Below Link to Reset Password ' + endl + app.config[
@@ -339,8 +349,7 @@ def not_found_error(error):
 
 @app.route('/test')
 def test():
-    form = RegisterForm()
-    return render_template('forms/register.html',form=form)
+    return render_template('forms/show-user.html')
 
 
 if not app.debug:

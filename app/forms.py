@@ -79,5 +79,5 @@ class ResetForm(Form):
     confirm = PasswordField('Repeat Password')
     reset_token = StringField(
         'Token',
-        Length(min=40,message="Invalid Token")
+        [Length(min=40,message="Invalid Token")]
     )

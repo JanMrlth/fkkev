@@ -1,4 +1,5 @@
-import os,pass1
+import os
+from pass1 import PASSWORD
 # Grabs the folder where the script runs.
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -22,7 +23,8 @@ MAIL_PORT = int(os.environ.get('MAIL_PORT', '465'))
 MAIL_USE_TLS = int(os.environ.get('MAIL_USE_TLS', False))
 MAIL_USE_SSL = int(os.environ.get('MAIL_USE_SSL', True))
 MAIL_USERNAME = os.environ.get('MAIL_USERNAME','sanudatta12@gmail.com')
-MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD',pass1.PASSWORD)
+MAIL_PASSWORD = PASSWORD
+print PASSWORD
 MAIL_SENDER = os.environ.get('MAIL_SENDER', 'Admin<sanudatta12@gmail.com>')
 
 # administrator list

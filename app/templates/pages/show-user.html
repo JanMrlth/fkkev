@@ -1,0 +1,102 @@
+{% extends('layouts/user-details.html') %}
+{% block title %}
+    Profile - User
+{% endblock %}
+
+{% block content %}
+    <div class="row" class="row__container"
+         style="	box-shadow: 0px 4px 32px rgba(189, 189, 189, 0.24); border: 3x solid #F2F2F2;">
+        <div class="col-md-3">
+            <br><br><br><br><br><br>
+            <div class="alert alert-info" style="height: 380px">
+                <h3 style="font-family: 'Montserrat'"><b>Member Data</b></h3>
+                <br>
+                <ul class="alert__ul">
+
+                    <li><h4><a href="/accounts">Bank Account</a></h4></li>
+                    <li><h4><a href="/accounts">Invoice</a></h4></li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <br><br>
+            <h3 class="text text-center text-success" style="font-family: 'Montserrat'"><b>Member data</b>
+                <button class="btn btn-primary" type="submit">Edit</button>
+            </h3>
+            <br>
+            <form></form>
+            <table class="table" class="table__container">
+
+                <tbody>
+                <tr>
+                    <td><b>Mitgliedsnummer</b></td>
+                    <td>FraKeKueV{{ user.id }}</td>
+                </tr>
+                <tr class="success">
+                    <td><b>user.firstname</b></td>
+                    <td>First Name</td>
+                </tr>
+                <tr class="primary">
+                    <td><b>user.lastname</b></td>
+                    <td>Last Name</td>
+                </tr>
+                <tr class="info">
+                    <td><b>user.bday</b></td>
+                    <td>Birthday DD-MM-YY</td>
+                </tr>
+                <tr class="warning">
+                    {% id user.road %}
+                        <td><b>user.road</b></td>
+                    {% else %}
+                        <td><b>No Road Provided</b></td>
+                    {% endif %}
+                    <td>Road</td>
+                </tr>
+                <tr class="active">
+                    <td><b>{{ user.postcode }}</b></td>
+                    <td>Post Code</td>
+                </tr>
+                <tr>
+                    <td><b>{{ user.town }}</b></td>
+                    <td>Town</td>
+                </tr>
+                <tr class="success">
+                    <td><b>{{ user.email }}</b></td>
+                    <td>Mail</td>
+                </tr>
+                <tr class="info">
+                    {% if user.phone %}
+                        <td><b>{{ user.phone }}</b></td>
+                    {% else %}
+                        <td><b>Not Available</b></td>
+                    {% endif %}
+                    <td>Phone</td>
+                </tr>
+                <tr class="active">
+                    {% if user.mobile %}
+                        <td><b>{{ user.mobile }}</b></td>
+                    {% else %}
+                        <td><b>Not Available</b></td>
+                    {% endif %}
+                    <td>Mobile</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3">
+            <div class="image__container">
+                {% if user.image_url %}
+                    <img src="{{ user.image_url }}">
+                {% else %}
+                    <img src="https://stroops.com/wp-content/uploads/2016/11/placeholder-profile-male-500x500.png">
+                {% endif %}
+                class="image__item">
+                <br><br>
+                <div class="alert alert-info alert-sm" class="image__text">
+                    My profile pciture
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

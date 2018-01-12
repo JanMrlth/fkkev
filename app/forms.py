@@ -10,60 +10,74 @@ class RegisterForm(Form):
         choices=[('1', 'Ordinary Member'), ('2', 'Sustaining Member')], default=1
     )
     email = StringField(
-        'Email', validators=[DataRequired(), Length(min=6, max=254),Email()]
+        'Email', validators=[DataRequired(), Length(min=6, max=254), Email()]
     )
     firstname = StringField(
-        'Firstname', validators=[DataRequired(), Length(min=2,message="Too short First Name")]
+        'Firstname', validators=[DataRequired(), Length(min=2, message="Too short First Name")]
     )
     lastname = StringField(
-        'Lastname', validators=[DataRequired(), Length(min=2,message="Too short Last Name")]
+        'Lastname', validators=[DataRequired(), Length(min=2, message="Too short Last Name")]
     )
     bday = DateField(
         'Bday',
     )
     road = StringField(
-        'Road', validators=[Length(min=1,max=400),Optional()]
+        'Road', validators=[Length(min=1, max=400), Optional()]
     )
     postcode = IntegerField(
-        'Postcode',validators=[DataRequired()]
+        'Postcode', validators=[DataRequired()]
     )
     town = StringField(
-        'Town',validators=[Length(max=400)]
+        'Town', validators=[Length(max=400)]
     )
     persontype = IntegerField(
-        'Persontype',validators=[NumberRange(0,2,message="Person Type is Invalid")]
+        'Persontype', validators=[NumberRange(0, 2, message="Person Type is Invalid")]
     )
     company = StringField(
-        'Company',validators=[Length(max=300),Optional()]
+        'Company', validators=[Length(max=300), Optional()]
     )
     phone = StringField(
-        'Phone',validators=[Optional()]
+        'Phone', validators=[Optional()]
     )
     mobile = StringField(
-        'Mobile',validators=[Optional()]
+        'Mobile', validators=[Optional()]
     )
     image_url = StringField(
-        'Image Url',validators=[Optional()]
+        'Image Url', validators=[Optional()]
     )
     account_holder = StringField(
-        'Accountname',validators=[DataRequired(),Length(min=10,max=200,message="Invalid Account Name")]
+        'Accountname', validators=[DataRequired(), Length(min=10, max=200, message="Invalid Account Name")]
     )
     iban = StringField(
-        'IBAN',validators=[DataRequired(),Length(min=16,max=30)]
+        'IBAN', validators=[DataRequired(), Length(min=16, max=30)]
     )
     bic = StringField(
         'BIC', validators=[DataRequired(), Length(min=9, max=15)]
     )
     fee = IntegerField(
-        'Fee',validators=[DataRequired()]
+        'Fee', validators=[DataRequired()]
     )
 
+
 class LoginForm(Form):
-    email = StringField('Email', [DataRequired(),Length(min=6, max=254),Email()])
+    email = StringField('Email', [DataRequired(), Length(min=6, max=254), Email()])
     password = PasswordField('Password', [DataRequired()])
 
 
 class ForgotForm(Form):
     email = StringField(
-        'Email', validators=[DataRequired(), Length(min=6, max=254),Email()]
+        'Email', validators=[DataRequired(), Length(min=6, max=254), Email()]
+    )
+
+
+class ResetForm(Form):
+    password = PasswordField('New Password', [
+        DataRequired(),
+        EqualTo('confirm', message='Passwords must match'),
+        Length(min=8,max=300,message="Your password must be between 8 and 300 characters!")
+    ])
+    confirm = PasswordField('Repeat Password')
+    reset_token = StringField(
+        'Token',
+        Length(min=40,message="Invalid Token")
     )

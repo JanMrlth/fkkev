@@ -296,11 +296,32 @@ def forgot():
         db.session.add(forgotobj)
         msg = Message('Password Reset Email.', sender=ADMINS[0], recipients=[email])
         msg.body = 'Click the Below Link to Reset Password ' + endl + app.config[
-            'BASE_URL'] + '/resetpassword/' + reset_token;
+            'BASE_URL'] + '/resetpassword/' + reset_token
         mail.send(msg)
-        flash('Reset Password Mail sent to your Email Id!', 'success')
+        flash('Password Reset Email sent to your Email Id!', 'success')
         return redirect(url_for('index'))
-    return render_template('forms/forgot.html')
+    return render_template('forms/forgot.html',form=form)
+
+
+@app.route('/resetpassword/<reset_token>',methods=['GET','POST'])
+def reset_pass(reset_token):
+    form = ResetForm()
+    if request.method == 'GET':
+        forgotObj = Forgotpassword.query.filter_by(forgot_code=reset_token)
+        if forgot is None:
+            flash('Invalid Reset Token!','error')
+            return redirect(url_for('index'))
+        return render_template('forms/final_reset.html',reset_token=reset_token,form=form)
+    elif form.validate_on_submit():
+        forgotObj = Forgotpassword.query.filter_by(forgot_code=reset_token)
+        if forgot is None:
+            flash('Invalid Reset Token!', 'error')
+            return redirect(url_for('index'))
+        forgotObj.user_id.password = form.password.data
+        db.session.add(forgotObj)
+        db.session.commit()
+        flash('Password Updated Successfully','success')
+        return redirect(url_for('index'))
 
 
 # Error handlers.

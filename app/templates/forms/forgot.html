@@ -1,12 +1,42 @@
-{% extends 'layouts/form.html' %}
-{% block title %}Reset Password{% endblock %}
+{% extends('layouts/main.html') %}
+{% block title %}
+    Forgot Password
+{% endblock %}
 {% block content %}
-  <form method="post" class="form form-reset">
-    <h3 class="form-heading">Reset Password <a href="{{ url_for('home') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
-    {{ form.email(class_ = 'form-control first-input last-input', placeholder = form.email.label.text) }}
-    <p class="pull-left"><a href="{{ url_for('login') }}">Login</a></p>
-    <p class="pull-right"><a href="{{ url_for('register') }}">Register</a></p>
-    <input type="submit" value="Submit" class="btn btn-lg btn-primary btn-block" disabled>
-    <p>You must add database as well as Flask-Login to enable user management. See the <a href="http://www.realpython.com">Real Python</a> course for more info!</p>
-  </form>
+<div class="col-md-3">
+            {% with messages = get_flashed_messages(category_filter=["error"]) %}
+                {% if messages %}
+                    <div class="alert alert-danger">
+                        <ul class="flashes">
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endwith %}
+            {% with messages = get_flashed_messages(category_filter=["success"]) %}
+                {% if messages %}
+                    <div class="alert alert-success">
+                        <ul class="flashes">
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="/login">
+                <div class="form-group">
+                    {{ form.csrf_token }}
+                    {{ form.email.label }}
+                    {{ form.email(class = 'form-control', placeholder = "Enter Your email here", required = true,id="mailID",type="email") }}
+                    {% if form.email.errors %}
+                        <ul class="errors">{% for error in form.email.errors %}
+                            <li>{{ error }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+                <button class="btn btn-success" type="submit">Send Reset Link</button>
+            </form>
+        </div>
 {% endblock %}

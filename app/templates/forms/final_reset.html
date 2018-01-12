@@ -1,0 +1,31 @@
+{% extends('layouts/main.html') %}
+{% block title %}
+    Reset Password
+{% endblock %}
+{% block content %}
+    <div class="col-md-3">
+        {% for field in form.errors %}
+            {% for error in form.errors[field] %}
+                <div class="alert alert-error">
+                    {{ field }}
+                    <strong>Error!</strong> {{ error }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+        <form method="POST" action="/resetpassword">
+            <div class="form-group">
+                <input type="password">
+            </div>
+            <div class="form-group">
+                {{ form.password.label }}
+                {{ form.password(class = 'form-control', placeholder = "Enter Your password here", required = true,id="password") }}
+                {% if form.password.errors %}
+                    <ul class="errors">{% for error in form.password.errors %}
+                        <li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
+            </div>
+            {{ form.reset_token(class="hidden",value=reset_token) }}
+            <button class="btn btn-success" type="submit">Reset</button>
+        </form>
+    </div>
+{% endblock %}

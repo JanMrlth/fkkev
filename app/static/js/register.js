@@ -90,6 +90,9 @@ $(document).ready(function () {
             valBIC = data.bankData.bic;
             document.getElementById("bic").value = valBIC;
             document.getElementById("bic").disabled = false;
+        }).error(function (err) {
+            console.log("Error:-" + err);
+            document.getElementById("bic").disabled = false;
         });
     });
 
@@ -109,7 +112,6 @@ $(document).ready(function () {
             console.log("city is:");
         }).error(function (err) {
             if(err){
-                console.log("Error Getting City");
                 document.getElementById("city").disabled = false;
                 document.getElementById("city").placeholder = 'Not Found City';
             }

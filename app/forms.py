@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired, EqualTo, Length, email, NumberRange
 class RegisterForm(Form):
     membertype = RadioField(
         [DataRequired()],
-        choices=[(1, 'Ordinary Member'), (2, 'Sustaining Member')], default=1
+        choices=[('1', 'Ordinary Member'), ('2', 'Sustaining Member')], default=1
     )
     email = StringField(
         'Email', validators=[DataRequired(), Length(min=6, max=254),Email()]
@@ -19,9 +19,6 @@ class RegisterForm(Form):
     )
     bday = DateField(
         'Bday',
-    )
-    road = StringField(
-        'Road', validators=[Length(min=6, max=400)]
     )
     postcode = IntegerField(
         'Postcode',validators=[DataRequired()]
@@ -36,10 +33,10 @@ class RegisterForm(Form):
         'Company',validators=[Length(max=300)]
     )
     phone = StringField(
-        'Phone',validators=[Length(min=11,max=15,message="Invalid Phone Number")]
+        'Phone',
     )
-    mobile = IntegerField(
-        'Mobile',validators=[DataRequired(),Length(min=10,max=15,message="Invalid Mobile Number")]
+    mobile = StringField(
+        'Mobile',validators=[DataRequired()]
     )
     image_url = StringField(
         'Image Url',validators=[URL(message='Image URL is invalid')]
@@ -48,7 +45,7 @@ class RegisterForm(Form):
         'Accountname',validators=[DataRequired(),Length(min=10,max=200,message="Invalid Account Name")]
     )
     iban = StringField(
-        'IBAN',validators=[DataRequired(),Length(min=16,max=25)]
+        'IBAN',validators=[DataRequired(),Length(min=16,max=30)]
     )
     bic = StringField(
         'BIC', validators=[DataRequired(), Length(min=9, max=15)]

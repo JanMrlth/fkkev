@@ -97,9 +97,12 @@ def logout_check():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
-    if form.validate_on_submit() and (form.membertype.data in [1, 2]) and (form.persontype.data in [1.2]):
+    if form.validate_on_submit() and (int(form.membertype.data) in [1, 2]) and (int(form.persontype.data) in [1.2]):
         passwordTemp = ''.join((random.choice(chars)) for x in range(app.config['PWS_SIZE']))
         first_fee = 9
+        form.membertype.data = int(form.membertype.data)
+        form.persontype.data = int(form.persontype.data)
+
         if form.membertype.data == 1 and form.fee.data in [3, 6, 30]:
             first_fee = 9
         elif form.membertype.data == 2 and form.fee.data in [25, 35, 100]:
@@ -122,7 +125,7 @@ def register():
 
         bankObj = Bankdetails()
         bankObj.account_holder = (form.firstname.data + " " + form.lastname.data).title()
-        iban = form.iban.data
+        iban = form.iban.data.replace(" ", "")
         ibanobj = IBAN(iban)
         bic = ibanobj.bic.compact
         bankObj.blz = ibanobj.bank_code

@@ -38,11 +38,19 @@
 <div class="container">
     <form method="POST" action="/register">
         <div class="container__rigisterForm" style=" margin-top: 80px;     box-shadow: 5px 10px #888888;">
+            {% for field in form.errors %}
+                {% for error in form.errors[field] %}
+                    <div class="alert alert-error">
+                        {{ field }}
+                        <strong>Error!</strong> {{ error }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
             <div class="registerForm__header">
                 <h1 class="registerForm__text "><b>Page 1 of 4</b></h1>
             </div>
             <div class="registerForm__footer" id="one">
-
+                {{ form.csrf_token }}
                 <h3><b>Personal Details</b></h3>
                 {% set i=1 %}
                 {% for subField in form.membertype %}
@@ -78,7 +86,7 @@
 
                 <div class="form-group">
                     <label for="mail" style="float: left;">Email ID</label>
-                    {{ form.lastname(class="form-control",id="mail",placeholder="yourname@domamin.com",type="email") }}
+                    {{ form.email(class="form-control",id="mail",placeholder="yourname@domamin.com",type="email") }}
                 </div>
                 <div class="form-group">
                     <label for="sName" style="float: left;">Straße & Nr</label>
@@ -86,13 +94,13 @@
                 </div>
                 <div class="form-group">
                     <label for="plz" style="float: left;">Zip Code</label>
-                    {{ form.lastname(class="form-control",id="plz",placeholder="12345",type="number") }}
+                    {{ form.postcode(class="form-control",id="plz",placeholder="12345",type="number") }}
                 </div>
                 <div class="form-group">
                     <label for="city" style="float: left;">Stadt</label>
-                    {{ form.lastname(class="form-control",id="city",placeholder="City Name") }}
+                    {{ form.town(class="form-control",id="city",placeholder="City Name") }}
                 </div>
-                {{ form.persontype(type="number",id="topVAl") }}
+                {{ form.persontype(type="number",id="topVAl",value=0) }}
                 <br>
                 <button class="btn btn-success" onclick="show('one','two')" type="button">Continue</button>
 

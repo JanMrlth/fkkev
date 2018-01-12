@@ -29,11 +29,10 @@ class User(db.Model):
     firstname = db.Column(db.String(100),nullable=False)
     lastname = db.Column(db.String(100),nullable=False)
     bday = db.Column(db.DateTime,nullable=True) #only valid for personype = 2 (Natural Person)
-    road = db.Column(db.String(500))
     town = db.Column(db.String(400))
     postcode = db.Column(db.Integer,nullable=False)
-    phone = db.Column(db.Integer)
-    mobile = db.Column(db.Integer,nullable=False)
+    phone = db.Column(db.String(100))
+    mobile = db.Column(db.String(100),nullable=False)
     image_url = db.Column(db.String(500),nullable=True)
     
     def avatar(self, size):   # https://en.gravatar.com/site/implement/ and https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-vi-profile-page-and-avatars

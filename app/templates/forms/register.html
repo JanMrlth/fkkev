@@ -125,11 +125,12 @@
                         {{ form.image_url(class="form-control",id="phoneNumber",placeholder="49-12345678901",type="url") }}
                     </div>
                     <br> <br>
-
+                    <button class="btn btn-info" onclick="show('two','one')" type="button">Previous</button>
                     <button class="btn btn-success" onclick="show('two','three')" type="button">Continue</button>
+
                 </div>
                 <div class="registerForm__header">
-                    <h1 class="registerForm__text "><b>Bank details</b></h1>
+                    <h1 class="registerForm__text "><b>Page 3 of 4</b></h1>
                 </div>
                 <div class="registerForm__footer" id="three">
                     <h3><b>Please fill the details</b></h3>
@@ -206,7 +207,8 @@
                         <br>
                     </div>
                     <br>
-                    <button class="btn btn-success" onclick="show('three','four')" type="button">Continue</button>
+                    <button class="btn btn-info" onclick="show('three','two')" type="button">Previous</button>
+                    <button class="btn btn-success" onclick="appedDetails()" type="button">Continue</button>
 
                 </div>
 
@@ -214,7 +216,60 @@
                     <h1 class="registerForm__text "><b>Page 4 of 4</b></h1>
                 </div>
                 <div class="registerForm__footer" id="four">
-                    <h3><b>All the details wiil be shown here for confrmation</b></h3>
+                            <h3><b>Personal Details</b></h3>
+                            <table class="table table-hover">
+                                <tbody>
+                                <tr>
+                                    <td><b>Vorname</b></td>
+                                    <td id="firstName-a"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Nachname</b></td>
+                                    <td id="lastName-a"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Starbe</b></td>
+                                    <td id="streetName-a"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>PLZ</b></td>
+                                    <td id="zipCode-a"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Ort</b></td>
+                                    <td id="cityName-a"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Email</b></td>
+                                    <td id="eMail-a"></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+                            <h3><b>Bank Details</b></h3>
+                            <table class="table table-hover">
+                                <tbody>
+                                <tr>
+                                    <td><b>Kotoinaber</b></td>
+                                    <td id="accountName-a"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>IBAN</b></td>
+                                    <td id="ibanCode-a">HOLA</td>
+                                </tr>
+                                <tr>
+                                    <td><b>BIC</b></td>
+                                    <td id="bicCode-a"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Mtl.Beitrag</b></td>
+                                    <td id="monthlyPay-a"></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                    <button class="btn btn-info" onclick="show('four','three')" type="button">Previous</button>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>

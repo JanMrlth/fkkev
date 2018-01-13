@@ -4,9 +4,9 @@
 
 var flag = 1;
 function unicodeEscape(str) {
-  return str.replace(/[\s\S]/g, function (escape) {
-    return '\\u' + ('0000' + escape.charCodeAt().toString(16)).slice(-4);
-  });
+    return str.replace(/[\s\S]/g, function (escape) {
+        return '\\u' + ('0000' + escape.charCodeAt().toString(16)).slice(-4);
+    });
 }
 function show(str1, str2) {
     console.log(str1, str2);
@@ -113,9 +113,9 @@ $(document).ready(function () {
         }).done(function (data) {
             console.log(data.places[0]);
             place = data['places'][0]['place name'];
-            data = "key="+apikey+"&text="+place+"&lang=en";
+            data = "key=" + apikey + "&text=" + place + "&lang=en";
             $.ajax({
-                type:"POST",
+                type: "POST",
                 data: data,
                 header: "Content-type: application/x-www-form-urlencoded",
                 url: "https://translate.yandex.net/api/v1.5/tr.json/translate",
@@ -138,3 +138,58 @@ $(document).ready(function () {
 });
 //
 var valBIC = 0;
+
+
+function appedDetails() {
+    // personal details
+    var firstName = document.getElementById("fName").value;
+    var lastName = document.getElementById("lName").value;
+    var streetName = document.getElementById("sName").value;
+    var zipCode = document.getElementById("plz").value;
+    var cityName = document.getElementById("city").value;
+    var eMail = document.getElementById("mail").value;
+
+    // bank details
+
+    var accountName = document.getElementById("bName").value;
+    var ibanCode = document.getElementById("iban").value;
+    var bicCode = document.getElementById("bic").value;
+    var monthlyPay = document.getElementById("payment").value;
+
+    // append personal details
+    $("#firstName-a").append(firstName);
+    $("#lastName-a").append(lastName);
+    $("#streetName-a").append(streetName);
+    $("#zipCode-a").append(zipCode);
+    $("#cityName-a").append(cityName);
+    $("#eMail-a").append(eMail);
+
+    // append bank details
+
+    $("#accountName-a").append(accountName);
+    $("#ibanCode-a").append(ibanCode);
+    $("#bicCode-a").append(bicCode);
+    $("#zipCode-a").append(zipCode);
+    $("#monthlyPay-a").append(monthlyPay);
+
+
+    // console.log(str1, str2);
+    // body...
+    var showDiv = document.getElementById("four");
+    var hideDiv = document.getElementById("three");
+    hideDiv.style.display = "none";
+    showDiv.style.display = "block";
+    if (flag == 1) {
+        console.log(flag);
+        document.getElementById("flag_one").style.display = "inline";
+    }
+    else {
+        console.log(flag);
+        document.getElementById("flag_two").style.display = "inline";
+    }
+    document.getElementById("bName").value = document.getElementById("fName").value + " " + document.getElementById("lName").value;
+
+
+}
+
+// $( ".inner" ).append( "<p>Test</p>" );

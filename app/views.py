@@ -11,6 +11,7 @@ from flask import render_template, request, redirect, url_for, flash, g
 from flask_login import login_user, login_required, current_user, logout_user
 from flask_mail import Message
 from schwifty import IBAN
+from sqlalchemy import exc
 
 from app import app, db, mail, bcrypt, login_manager
 from app.forms import *
@@ -95,13 +96,17 @@ def update_profile():
             user.postcode = form.postcode.data if form.postcode.data else user.postcode
             user.town = form.town.data if form.town.data else user.town
             user.company = form.company.data if form.company.data else user.company
-            user.phone = form.phone.data if form.phone.data else user.phone
-            user.mobile = form.mobile.data if form.mobile.data else user.mobile
-            if form.image_url and  not is_image_url(form.image_url.data):
-                    print form.image_url.data
-                    flash('Image URL Invalid','error')
+
+            if form.phone.data:
+                user.phone = form.phone.data
+            if form.mobile.data:
+                user.mobile = form.mobile.data
+            if form.image_url.data:
+                if is_image_url(form.image_url.data):
+                    user.image_url = form.image_url.data
+                else:
+                    flash('Invalid Image URL','error')
                     return redirect(url_for('update_profile'))
-            user.image_url = form.image_url.data if form.image_url.data else user.image_url
 
             if form.password.data and current_user.is_authenticated:
                 user.password = bcrypt.generate_password_hash(form.password.data)
@@ -207,8 +212,6 @@ def register():
         bankObj.sepa_ref += iban_visible[:6]
         bankObj.sepa_ref += str((5 - len(str(rows))) * '0') + str(rows)
         userObj.bankdetails.append(bankObj)
-        db.session.add(userObj)
-        db.session.add(bankObj)
 
         # Sending Email
         msg = Message('Anmeldung Frankfurter Kelterei Kultur e.V.', sender=ADMINS[0], recipients=[userObj.email])
@@ -237,14 +240,20 @@ def register():
         body += 'Beste Grube'
         msg.html = body.encode('utf-8')
         confirmobj = Confirmation(confirmation_code=confirmationSequence)
-        db.session.add(confirmobj)
-        userObj.confirmation.append(confirmobj)
-        db.session.commit()
-        mail.send(msg)
-        flash('Registered Id Successfully! Please verify using link sent to your email', 'success')
-        return redirect(url_for('index'))
+        try:
+            db.session.add(userObj)
+            db.session.add(bankObj)
+            db.session.add(confirmobj)
+            userObj.confirmation.append(confirmobj)
+            db.session.commit()
+            mail.send(msg)
+            flash('Registered Id Successfully! Please verify using link sent to your email', 'success')
+            return redirect(url_for('index'))
+        except exc.IntegrityError as e:
+            db.session().rollback()
+            flash('SQLAlchemy Integrity Error!','error')
+            return redirect(url_for('register'))
     return render_template('forms/register.html',form=form)
-
 
 @app.route('/verifyaccount/<confirmation_sequence>', methods=['GET'])
 def confirm_account(confirmation_sequence):
@@ -429,7 +438,7 @@ def admin_list():
 @is_admin
 @app.route('/getmemberprofile/<user_id>',methods=['GET'])
 def get_member_profile(user_id):
-    userobj = User.query.filter_by(id=15).first()
+    userobj = User.query.filter_by(id=user_id).first()
     if userobj is None:
         flash('Member Profile ID Invalid')
         return redirect(url_for('admin_list'))

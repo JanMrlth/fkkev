@@ -70,32 +70,31 @@
                         <td><b>Kontoinhaber</b></td>
 
                         <td>
-                            {{ form.account_holder(placeholder="Account Holder name",class="form-control",id="ac_holder",value=user.bankdetails[0].account_holder)}}
+                            {{ form.account_holder(placeholder="Account Holder name",class="form-control",id="ac_holder",value=user.bankdetails[0].account_holder) }}
                         </td>
                     </tr>
                     <tr class="primary">
                         <td><b>IBAN</b></td>
                         <td>
-                            {{ form.iban(placeholder="IBAN",class="form-control",id="iban",value=user.bankdetails[0].iban_visible)}}
+                            {{ form.iban(placeholder="IBAN",class="form-control",id="iban",value=user.bankdetails[0].iban_visible) }}
                         </td>
                     </tr>
                     <tr class="info">
                         <td><b>BIC</b></td>
                         <td>
-                            {{ form.bic(value=user.bankdetails[0].bic_visible,placeholder="BIC Code",class="form-control",id="bic")}}
+                            {{ form.bic(value=user.bankdetails[0].bic_visible,placeholder="BIC Code",class="form-control",id="bic") }}
+                        </td>
+                    </tr>
+                    <tr class="warning">
+                        <td><b>Account Number</b></td>
+                        <td>
+                            {{ form.account_no(placeholder="Account Number",class="form-control",id="acno",value=user.bankdetails[0].account_no,type='number') }}
                         </td>
                     </tr>
                     <tr class="warning">
                         <td><b>Bank</b></td>
                         <td>
-                            {{ form.account_no(placeholder="Account Number",class="form-control",id="acno",value=user.bankdetails[0].account_no,type='number')}}
-                        </td>
-                    </tr>
-                    <tr class="warning">
-                        <td><b>Bank</b></td>
-                        <td>
-                            <input type="text" class="form-control" id="bankName" placeholder="Bank">
-
+                            <input type="text" class="form-control" id="bankName" placeholder="Bank" disabled>
                         </td>
                     </tr>
                     </tbody>
@@ -108,7 +107,9 @@
             <br><br>
         </div>
         <div class="col-md-3">
-        <script type="text/javascript" src="{{ url_for('static',filename='js/register2.js') }}"></script>
+            <script type="text/javascript"
+                    src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.13/jquery.mask.js"></script>
+            <script type="text/javascript" src="{{ url_for('static',filename='js/register2.js') }}"></script>
         </div>
     </div>
 {% endblock %}

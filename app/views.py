@@ -461,10 +461,10 @@ def internal_error(error):
 def not_found_error(error):
     return render_template('errors/404.html'), 404
 
-@login_required
-@app.route('/test')
-def test():
-    return render_template('pages/admin-landing.html',user=current_user)
+# @login_required
+# @app.route('/test')
+# def test():
+#     return render_template('pages/admin-landing.html',user=current_user)
 
 
 if not app.debug:

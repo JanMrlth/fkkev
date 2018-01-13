@@ -55,7 +55,7 @@
                 {% set i=1 %}
                 {% for subField in form.membertype %}
                     <div class="form-check" style="display: inline;">
-                        {{ subField(class="form-check-input",**{"onclick":"showType("~loop.index~")"}) }}
+                        {{ subField(class="form-check-input",required=True,**{"onclick":"showType("~loop.index~")"}) }}
                         {{ subField.label }}
                     </div>
                 {% endfor %}
@@ -73,32 +73,32 @@
                 </div>
                 <div class="form-group">
                     <label for="fName" style="float: left;">Vorname</label>
-                    {{ form.firstname(class="form-control",id="fName",placeholder="Peter") }}
+                    {{ form.firstname(class="form-control",id="fName",placeholder="Peter",required=True) }}
                 </div>
                 <div class="form-group">
                     <label for="lName" style="float: left;">Nachname</label>
-                    {{ form.lastname(class="form-control",id="lName",placeholder="Huan") }}
+                    {{ form.lastname(class="form-control",id="lName",placeholder="Huan",required=True) }}
                 </div>
                 <div class="form-group" id="bDay_toggle">
                     <label for="bDay" style="float: left;">Birthday</label>
-                    {{ form.bday(class="form-control",id="bDay",placeholder="DD-MM-YY",type="date") }}
+                    {{ form.bday(class="form-control",id="bDay",placeholder="DD-MM-YY",type="date",required=True) }}
                 </div>
 
                 <div class="form-group">
                     <label for="mail" style="float: left;">Email ID</label>
-                    {{ form.email(class="form-control",id="mail",placeholder="yourname@domamin.com",type="email") }}
+                    {{ form.email(class="form-control",id="mail",placeholder="yourname@domamin.com",type="email",required=True) }}
                 </div>
                 <div class="form-group">
                     <label for="sName" style="float: left;">Straße & Nr</label>
-                    {{ form.road(class="form-control",id="sName",placeholder="Letzter Hasenpfad") }}
+                    {{ form.road(class="form-control",id="sName",placeholder="Letzter Hasenpfad",required=True) }}
                 </div>
                 <div class="form-group">
                     <label for="plz" style="float: left;">Zip Code</label>
-                    {{ form.postcode(class="form-control",id="plz",placeholder="12345",type="number") }}
+                    {{ form.postcode(class="form-control",id="plz",placeholder="12345",type="number",required=True) }}
                 </div>
                 <div class="form-group">
                     <label for="city" style="float: left;">Stadt</label>
-                    {{ form.town(class="form-control",id="city",placeholder="City Name") }}
+                    {{ form.town(class="form-control",id="city",placeholder="City Name",required=True) }}
                 </div>
                 {{ form.persontype(type="number",id="topVAl",value=0) }}
                 <br>
@@ -136,23 +136,23 @@
                     <br><br>
                     <div class="form-group">
                         <label for="bName" style="float: left;">Bank Account Name</label>
-                        {{ form.account_holder(class="form-control",id="bName",placeholder="ABC XYZ") }}
+                        {{ form.account_holder(class="form-control",id="bName",placeholder="ABC XYZ",required=True) }}
                     </div>
                     <div class="form-group">
                         <label for="iban" style="float: left;">IBAN</label>
-                        {{ form.iban(class="form-control",id="iban",placeholder="XXXX-XXXX-XXXX-XXXX-XX") }}
+                        {{ form.iban(class="form-control",id="iban",placeholder="XXXX-XXXX-XXXX-XXXX-XX",required=True) }}
                     </div>
 
                     <div class="form-group">
                         <label for="bic" style="float: left;">BIC</label>
-                        {{ form.bic(class="form-control",id="bic",placeholder="XXXXXX") }}
+                        {{ form.bic(class="form-control",id="bic",placeholder="XXXXXX",required=True) }}
                     </div>
 
 
                     <div id="flag_one">
                         <div class="form-group">
                             <label for="payment" style="float: left;">Monthly Payment</label>
-                            {{ form.fee(class="form-control",id="payment",value="9",type="number") }}
+                            {{ form.fee(class="form-control",id="payment",value="9",type="number",required=True) }}
                         </div>
                         <div class="form-check" style="display: inline;">
                             <input class="form-check-input" type="radio" name="exampleRadios-1" id="exampleRadios1-p"

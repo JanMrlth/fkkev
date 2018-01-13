@@ -121,12 +121,12 @@
         </div>
     </div>
 {% endblock %}
-{% if next %}
 {% block admin_list %}
-    <a href="/memberslist" style="color: white; text-decoration:  none;">
-        <div class="nav-sub-heading">
-            <h5><span class="glyphicon glyphicon-usd"></span> &nbsp;&nbsp;Member's Listing</h5>
-        </div>
-    </a>
+    {% if user.admin %}
+        <a href="/memberslist" style="color: white; text-decoration:  none;">
+            <div class="nav-sub-heading">
+                <h5><span class="glyphicon glyphicon-usd"></span> &nbsp;&nbsp;Member's Listing</h5>
+            </div>
+        </a>
+    {% endif %}
 {% endblock %}
-{% endif %}

@@ -11,18 +11,20 @@
             <div class="alert alert-info" style="height: 380px">
                 <h3 style="font-family: 'Montserrat'"><b>Member Data</b></h3>
                 <br>
-                <ul class="alert__ul">
-
-                    <li><h4><a href="/accounts">Bank Account</a></h4></li>
-                    <li><h4><a href="/accounts">Invoice</a></h4></li>
+                <ul style="list-style: none">
+                    <li><h4><a href="#">Bank Account</a></h4></li>
+                    <li>Holder Name: {{ user.bankdetails[0].account_holder }}</li>
+                    <li>Account No: {{ user.bankdetails[0].account_no }}</li>
+                    <li>IBAN: {{ user.bankdetails[0].iban_visible }}</li>
+                    <li>BIC: {{ user.bankdetails[0].bic_visible }}</li>
 
                 </ul>
             </div>
         </div>
         <div class="col-md-6">
             <br><br>
-            <h3 class="text text-center text-success" style="font-family: 'Montserrat'"><b>Member data</b>
-                <button class="btn btn-primary" type="submit">Edit</button>
+            <h3 class="text text-center text-success" style="font-family: 'Montserrat'"><b>Member data</b>&nbsp;&nbsp;
+                <a href="/editprofile"><button class="btn btn-primary" type="button">Edit</button></a>
             </h3>
             <br>
             <form></form>
@@ -98,9 +100,6 @@
                 {% endif %}
 
                 <br><br>
-                <div class="alert alert-info alert-sm" class="image__text">
-                    My profile pciture
-                </div>
             </div>
         </div>
     </div>

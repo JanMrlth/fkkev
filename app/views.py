@@ -6,13 +6,12 @@ import string
 import urllib2
 from Crypto.Cipher import AES
 from logging import Formatter, FileHandler
-
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, login_required, current_user, logout_user
 from flask_mail import Message
 from schwifty import IBAN
 
-from app import app, db, mail, bcrypt
+from app import app, db, mail, bcrypt, login_manager
 from app.forms import *
 from config import BLOCK_SIZE, PADDING, secret_key, ADMINS
 
@@ -37,6 +36,7 @@ def sendAcceptancemail(user_id, selected=True):
 
 
 def is_image_url(url):
+    print url
     check = url[:4]
     check2 = url[:5]
     if check == '.jpg' or check == '.png' or check2 == '.jpeg':
@@ -48,6 +48,9 @@ def is_image_url(url):
     else:
         return False
 
+@login_manager.user_loader
+def get_user(ident):
+  return User.query.get(int(ident))
 
 @app.route('/', methods=['GET'])
 def index():
@@ -66,6 +69,34 @@ def profile():
         flash('Please Login again!','warning')
         return redirect(url_for('index'))
 
+@login_required
+@app.route('/editprofile',methods=['GET','POST'])
+def update_profile():
+    if current_user.is_authenticated:
+        form = UpdateProfile()
+        if form.validate_on_submit():
+            user = current_user
+            user.firstname = form.firstname.data if form.firstname.data else user.firstname
+            user.lastname = form.lastname.data if form.lastname.data else user.lastname
+            user.bday = form.bday.data if form.bday.data else user.bday
+            user.road = form.road.data if form.road.data else user.road
+            user.postcode = form.postcode.data if form.postcode.data else user.postcode
+            user.town = form.town.data if form.town.data else user.town
+            user.company = form.company.data if form.company.data else user.company
+            user.phone = form.phone.data if form.phone.data else user.phone
+            user.mobile = form.mobile.data if form.mobile.data else user.mobile
+            if form.image_url and  not is_image_url(form.image_url.data):
+                    flash('Image URL Invalid','error')
+                    return redirect(url_for('update_profile'))
+            user.image_url = form.image_url.data if form.image_url.data else user.image_url
+            db.session.add(current_user)
+            db.session.commit()
+            flash('Updated Profile Successfully','success')
+        else:
+            flash('Incorrect or Invalid Details','warning')
+        return render_template('forms/edit-user.html', user=current_user,form=form)
+    else:
+        return redirect(url_for('index'))
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -74,11 +105,16 @@ def login():
         if userData is None:
             flash('Invalid Email Provided', 'error')
             return redirect(url_for('index'))
-        if bcrypt.checkpw(userData.password,form.password.data):
+        if bcrypt.check_password_hash(userData.password,form.password.data):
             userData.authenticated = True
             db.session.add(userData)
             db.session.commit()
+            print 'In'
             login_user(userData, remember=True)
+            return redirect(url_for('profile'))
+        else:
+            flash('Password Incorrect','error')
+            return redirect(url_for('index'))
     return render_template('forms/login.html',form=form)
 
 @app.route('/logout', methods=["GET"])
@@ -90,14 +126,16 @@ def logout():
     db.session.add(user)
     db.session.commit()
     logout_user()
-    return redirect(url_for('/checkLogout'))
+    flash('Logged out successfully', 'success')
+    return redirect(url_for('logout_check'))
 
 
 @app.route('/checkLogout', methods=['GET'])
 def logout_check():
     if current_user.is_authenticated:
         logout_user()
-    return redirect('/')
+        return redirect(url_for('index'))
+    return redirect(url_for('index'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -108,27 +146,28 @@ def register():
         passwordTemp = bcrypt.generate_password_hash(passwordReal)
         form.membertype.data = int(form.membertype.data)
         form.persontype.data = int(form.persontype.data)
-
+        image_url=None
+        if form.image_url and is_image_url(form.image_url.data):
+            image_url = form.image_url.data
         if (form.persontype.data == 1):
             userObj = User(email=form.email.data, password=passwordTemp, membertype=form.membertype.data,
                            persontype=form.persontype.data, fee=form.fee.data,
                            company=form.company.data, firstname=form.firstname.data, lastname=form.lastname.data,
                            bday=form.bday.data, town=form.town.data,road=form.road.data ,postcode=form.postcode.data,
-                           phone=form.phone.data, mobile=form.mobile.data)
+                           phone=form.phone.data, mobile=form.mobile.data,image_url=image_url)
         else:
             userObj = User(email=form.email.data, password=passwordTemp, membertype=form.membertype.data,
                            persontype=form.persontype.data, fee=form.fee.data,
                            firstname=form.firstname.data, lastname=form.lastname.data,
                            bday=form.bday.data, town=form.town.data,road=form.road.data, postcode=form.postcode.data,
-                           phone=form.phone.data, mobile=form.mobile.data)
+                           phone=form.phone.data, mobile=form.mobile.data,image_url=image_url)
 
         userObj.town = (userObj.town).encode('utf-8')
         bankObj = Bankdetails()
         bankObj.account_holder = (form.firstname.data + " " + form.lastname.data).title()
         iban = form.iban.data.replace(" ", "")
-        print iban
         ibanobj = IBAN(iban)
-        bic = ibanobj.bic.compact
+        bic = form.bic.data
         bankObj.blz = ibanobj.bank_code
         bankObj.account_no = ibanobj.account_code
         digits = len(iban)
@@ -323,7 +362,38 @@ def reset_pass(reset_token):
         flash('Password Updated Successfully','success')
         return redirect(url_for('index'))
 
+@login_required
+@app.route('/bankprofile',methods=['GET'])
+def bank_profile():
+    if current_user.is_authenticated and current_user.authenticated:
+        return render_template('pages/show-bank.html',user=current_user)
+    return redirect(url_for('index'))
 
+@login_required
+@app.route('/editbank',methods=['GET','POST'])
+def edit_bank_profile():
+    if not current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = EditBank()
+    if form.validate_on_submit():
+        user = current_user
+        user.bankdetails[0].account_no = form.account_no.data
+        user.bankdetails[0].account_holder = form.account_holder.data
+        iban = form.iban.data
+        iban = form.iban.data.replace(" ", "")
+        bic = form.bic.data
+        digits = len(iban)
+        iban_visible = iban[:6] + 'X' * (digits - 10) + iban[-4:]
+        digits = len(bic)
+        bic_visible = bic[:2] + 'X' * (digits - 4) + bic[-2:]
+        user.bankdetails[0].iban_visible = iban_visible
+        user.bankdetails[0].iban = EncodeAES(cipher,iban)
+        user.bankdetails[0].bic_visible = bic_visible
+        user.bankdetails[0].bic = EncodeAES(cipher,bic)
+        db.session.add(user)
+        db.session.commit()
+        flash('Bank Details update successfully','success')
+    return render_template('forms/edit-bank.html',form=form,user=current_user)
 # Error handlers.
 
 @app.errorhandler(500)
@@ -336,10 +406,10 @@ def internal_error(error):
 def not_found_error(error):
     return render_template('errors/404.html'), 404
 
-# @login_required
-# @app.route('/test')
-# def test():
-#     return render_template('pages/show-user.html',user=current_user)
+@login_required
+@app.route('/test')
+def test():
+    return render_template('forms/edit-bank.html',user=current_user)
 
 
 if not app.debug:

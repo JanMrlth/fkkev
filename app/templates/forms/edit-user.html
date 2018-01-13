@@ -1,142 +1,127 @@
-<!DOCTYPE html>
-<html>
-   <head>
-      <title> Member Data </title>
-      <!-- Latest compiled and minified CSS -->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-      <!-- jQuery library -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      <!-- Latest compiled JavaScript -->
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-      <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/register-style.css') }}">
-      <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-      <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-      <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
-   </head>
-   <body>
-        <nav class="navbar navbar-fixed-top navbar-inverse">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">FKKeV</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div><!-- /.nav-collapse -->
-      </div><!-- /.container -->
-    </nav>
-    <div class="container" style="">
-      <br><br><br><br>
-      <div class="row" class="row__container" style=" box-shadow: 0px 4px 32px rgba(189, 189, 189, 0.24); border: 3x solid #F2F2F2;">
-        <div class="col-md-3">
-          <br><br><br><br><br><br>
-          <div class="alert alert-info" style="height: 478px" >
-            <h3 style="font-family: 'Montserrat'"><b>Member Data</b></h3>
-            <br>
-            <ul class="alert__ul">
+{% extends('layouts/user-details.html') %}
+{% block title %}
+    Edit Profile
+{% endblock %}
+{% block content %}
 
-              <li><h4><a href="/accounts">Bank Account</a></h4></li>
-              <li><h4><a href="/accounts">Invoice</a></h4></li>
-
-            </ul>
-          </div>
-        </div>
+    <div class="row" class="row__container"
+         style=" box-shadow: 0px 4px 32px rgba(189, 189, 189, 0.24); border: 3px solid #F2F2F2;">
+        {% for field in form.errors %}
+            {% for error in form.errors[field] %}
+                <div class="alert alert-error">
+                    {{ field }}
+                    <strong>Error!</strong> {{ error }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% with messages = get_flashed_messages(category_filter=["success"]) %}
+            {% if messages %}
+                <div class="alert alert-success" align="center">
+                    <ul class="flashes" style="list-style-type:none">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% with messages = get_flashed_messages(category_filter=["error"]) %}
+            {% if messages %}
+                <div class="alert alert-danger" align="center">
+                    <ul class="flashes" style="list-style-type:none">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
         <div class="col-md-6">
-          <br><br>
-          <h3 class="text text-center text-success" style="font-family: 'Montserrat'"><b>Member data</b>  </h3>
-          <br>
-
-
-
-    <form>
-  <table class="table" style="font-family: 'Montserrat', sans-serif; border: 1px solid #F2F2F2;">
-
-    <tbody >
-      <tr>
-        <td><b>Mitgliedsnummer</b></td>
-        <td>Membership number</td>
-      </tr>
-      <tr class="success">
-        <td><b>Vorname</b></td>
-        <td>First Name</td>
-      </tr>
-      <tr class="primary">
-        <td><b>Name</b></td>
-        <td>
-          <input type="text" class="form-control" id="lName">
-        </td>
-      </tr>
-      <tr class="info">
-        <td><b>Geburtstag</b></td>
-        <td>Birthday DD-MM-YY</td>
-      </tr>
-      <tr class="warning">
-        <td><b>Straße</b></td>
-        <td>
-          <input type="text" class="form-control" id="sName">
-        </td>
-      </tr>
-      <tr class="active">
-        <td><b>PLZ</b></td>
-        <td>
-          <input type="number" class="form-control" id="plz">
-        </td>
-      </tr>
-        <tr>
-        <td><b>Ort</b></td>
-        <td>
-          <input type="text" class="form-control" id="ort">
-        </td>
-      </tr>
-      <tr class="success">
-        <td><b>E-Mail</b></td>
-        <td>
-          <input type="text" class="form-control" id="mail">
-        </td>
-      </tr>
-      <tr class="info">
-        <td><b>Telefon</b></td>
-        <td>
-          <input type="number" class="form-control" id="telephone">
-        </td>
-      </tr>
-      <tr class="active">
-        <td><b>Handy</b></td>
-        <td>
-          <input type="number" class="form-control" id="mobile">
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="text-center">
-  <button class="btn btn-success" class="center-btn">Submit</button>
-
-  </div>
-  </form>
-  <br><br>
-  </div>
-        <div class="col-md-3">
-          <div class="image__container" >
-            <img src="https://stroops.com/wp-content/uploads/2016/11/placeholder-profile-male-500x500.png" class="image__item">
             <br><br>
-            <div class="alert alert-info alert-sm" class="image__text" >
-              My profile pciture
-            </div>
-          </div>
+            <h3 class="text text-center text-success" style="font-family: 'Montserrat'"><b>Member data</b></h3>
+            <br>
+            <form method="post" action="/editprofile">
+                {{ form.hidden_tag() }}
+                <table class="table" style="font-family: 'Montserrat', sans-serif; border: 1px solid #F2F2F2;">
+
+                    <tbody>
+                    <tr>
+                        <td><b>Mitgliedsnummer</b></td>
+                        <td>FKKeVMeM{{ user.id }}</td>
+                    </tr>
+                    <tr class="success">
+                        <td><b>Vorname</b></td>
+                        <td>{{ form.firstname(id="fName",class="form-control",value=user.firstname) }}</td>
+                    </tr>
+                    <tr class="primary">
+                        <td><b>Name</b></td>
+                        <td>
+                            {{ form.lastname(id="lName",class="form-control",value=user.lastname) }}
+                        </td>
+                    </tr>
+                    <tr class="info">
+                        <td><b>Geburtstag</b></td>
+                        <td>
+                            {{ form.bday(id="bday",class="form-control",type="date",value=user.bday.date()) }}
+                        </td>
+                    </tr>
+                    <tr class="warning">
+                        <td><b>Straße</b></td>
+                        <td>
+                            {{ form.road(id="sName",class="form-control",value=user.road) }}
+                        </td>
+                    </tr>
+                    <tr class="active">
+                        <td><b>PLZ</b></td>
+                        <td>
+                            {{ form.postcode(id="plz",class="form-control",value=user.postcode) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Stadt</b></td>
+                        <td>
+                            {{ form.town(id="ort",class="form-control",value=user.town) }}
+                        </td>
+                    </tr>
+                    <tr class="info">
+                        <td><b>Telefon</b></td>
+                        <td>
+                            {{ form.phone(id="phone",class="form-control",value=(user.phone),placeholder='None') }}
+                        </td>
+                    </tr>
+                    <tr class="active">
+                        <td><b>Handy</b></td>
+                        <td>
+                            {{ form.mobile(id="mobile",class="form-control",value=user.mobile,placeholder='None') }}
+                        </td>
+                    </tr>
+                    <tr class="active">
+                        <td><b>Profilbild</b></td>
+                        <td>
+                            {{ form.image_url(id="image_url",class="form-control",value=user.image_url,placeholder='None',type="url") }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <button class="btn btn-success" class="center-btn" type="submit">Submit</button>
+                </div>
+            </form>
+            <br><br>
         </div>
-      </div>
-      <div class="footer">
-        <!-- Add footer here -->
-      </div>
+        <div class="col-md-3">
+            <div class="image__container">
+                {% if user.image_url %}
+                    <img src="{{ user.image_url }}" class="image__item">
+                {% else %}
+                    <img src="https://stroops.com/wp-content/uploads/2016/11/placeholder-profile-male-500x500.png"
+                         class="image__item">
+                {% endif %}
+                <br><br>
+                <div class="alert alert-info alert-sm" class="image__text">
+                    My profile pciture
+                </div>
+            </div>
+        </div>
     </div>
-</body>
+{% endblock %}

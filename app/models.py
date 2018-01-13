@@ -3,9 +3,10 @@ import datetime
 from validators import md5
 
 from config import MIN_FEE
+from flask.ext.login import UserMixin
 from app import app,db
 
-class User(db.Model):
+class User(db.Model,UserMixin):
     #login
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(254),unique=True,nullable=False)

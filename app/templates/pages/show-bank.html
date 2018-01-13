@@ -1,0 +1,58 @@
+{% extends('layouts/user-details.html') %}
+{% block title %}
+    Bank Profile
+{% endblock %}
+{% block content %}
+    <div class="row" class="row__container"
+         style="	box-shadow: 0px 4px 32px rgba(189, 189, 189, 0.24); border: 3x solid #F2F2F2;">
+        <div class="col-md-3" style="height: 100%;">
+            <br><br><br><br><br><br>
+            <div class="alert alert-info" style="height: 380px">
+                <h3 style="font-family: 'Montserrat'"><b>Member Data</b></h3>
+                <br>
+                <ul class="alert__ul">
+
+                    <li><h4><a href="/accounts">Bank Account</a></h4></li>
+                    <li><h4><a href="/accounts">Invoice</a></h4></li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <br><br>
+            <h3 class="text text-center text-success" style="font-family: 'Montserrat'"><b>Bank Account</b>
+                <a href="/editbank">
+                <button class="btn btn-primary" type="submit">Edit Bank Details</button>
+            </a></h3>
+            <br>
+            <form></form>
+            <table class="table" class="table__container">
+
+                <tbody>
+                <tr>
+                    <td><b>Mitgliedsbeitrag</b></td>
+                    <td>{{ user.fee }} Euros</td>
+                </tr>
+                <tr class="success">
+                    <td><b>Kontoinhaber</b></td>
+                    <td>{{ user.bankdetails[0].account_holder }}</td>
+                </tr>
+                <tr class="primary">
+                    <td><b>IBAN</b></td>
+                    <td>{{ user.bankdetails[0].iban_visible }}</td>
+                </tr>
+                <tr class="info">
+                    <td><b>BIC</b></td>
+                    <td>{{ user.bankdetails[0].bic_visible }}</td>
+                </tr>
+                <tr class="warning">
+                    <td><b>Account Number</b></td>
+                    <td>{{ user.bankdetails[0].account_no }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+{% endblock %}

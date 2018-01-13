@@ -7,7 +7,7 @@
         {% with messages = get_flashed_messages(category_filter=["error"]) %}
             {% if messages %}
                 <div class="alert alert-danger">
-                    <ul class="flashes">
+                    <ul class="flashes" style="list-style-type:none">
                         {% for message in messages %}
                             <li>{{ message }}</li>
                         {% endfor %}
@@ -18,7 +18,7 @@
         {% with messages = get_flashed_messages(category_filter=["warning"]) %}
             {% if messages %}
                 <div class="alert alert-warning">
-                    <ul class="flashes">
+                    <ul class="flashes" style="list-style-type:none">
                         {% for message in messages %}
                             <li>{{ message }}</li>
                         {% endfor %}
@@ -29,7 +29,7 @@
         {% with messages = get_flashed_messages(category_filter=["success"]) %}
             {% if messages %}
                 <div class="alert alert-success">
-                    <ul class="flashes">
+                    <ul class="flashes" style="list-style-type:none">
                         {% for message in messages %}
                             <li>{{ message }}</li>
                         {% endfor %}
@@ -39,6 +39,7 @@
         {% endwith %}
         <form method="POST" action="/login">
             <div class="form-group">
+                {{ form.hidden_tag() }}
                 {{ form.csrf_token }}
                 {{ form.email.label }}
                 {{ form.email(class = 'form-control', placeholder = "Enter Your email here", required = true,id="mailID",type="email") }}

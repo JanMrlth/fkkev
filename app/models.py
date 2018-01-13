@@ -3,7 +3,7 @@ import datetime
 from validators import md5
 
 from config import MIN_FEE
-from flask.ext.login import UserMixin
+from flask_login import UserMixin
 from app import app,db
 
 class User(db.Model,UserMixin):

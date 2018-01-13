@@ -49,27 +49,18 @@ def is_image_url(url):
     else:
         return False
 
-def is_admin(f):
-    @wraps(f)
-    def _decorator(request, *args, **kwargs):
-        if g.user is not None and  not g.admin:
-            flash('Please Login with a Admin ID!','error')
-            return redirect(url_for('profile', next=request.url))
-        elif g.user is None:
-          return redirect(url_for('index'),next=request.url)
-        return f(*args, **kwargs)
-    return _decorator
+def is_admin(g):
+    if g is not None and not g.admin:
+        flash('Please Login with a Admin ID!', 'error')
+        return False
+    elif g.user is None:
+        return True
 
-def is_verified(f):
-    @wraps(f)
-    def _decorator(request, *args, **kwargs):
-        if g.user and g.user.is_authenticated and (not g.user.confirmed and not g.admin):
-            flash('Please verify your account from your emailed Link!','error')
-            return redirect(url_for('index', next=request.url))
-        elif g.user is None:
-          return redirect(url_for('index'),next=request.url)
-        return f(*args, **kwargs)
-    return _decorator
+def is_verified(g):
+    if g and g.is_authenticated and (not g.confirmed and not g.admin):
+        flash('Please verify your account from your emailed Link!', 'error')
+        return False
+    return True
 
 @login_manager.user_loader
 def get_user(ident):
@@ -85,9 +76,10 @@ def index():
     return render_template('forms/login.html', form=form)
 
 @login_required
-@is_verified
 @app.route('/profile',methods=['GET'])
 def profile():
+    if not is_verified(current_user):
+        return redirect(url_for('logout'))
     if current_user.is_authenticated:
         return render_template('pages/show-user.html',user=current_user)
     else:
@@ -95,10 +87,9 @@ def profile():
         return redirect(url_for('index'))
 
 @login_required
-@is_verified
 @app.route('/editprofile',methods=['GET','POST'])
 def update_profile():
-    if current_user.is_authenticated:
+    if current_user.is_authenticated and is_verified(current_user):
         form = UpdateProfile()
         if form.validate_on_submit():
             user = current_user
@@ -270,19 +261,20 @@ def register():
 
 @app.route('/verifyaccount/<confirmation_sequence>', methods=['GET'])
 def confirm_account(confirmation_sequence):
-    confirmObj = Confirmation.query.filter_by(confirmation_code=confirmation_sequence)
-    if confirmObj == None:
+    confirmObj = Confirmation.query.filter_by(confirmation_code=confirmation_sequence).first()
+    if confirmObj is None:
         # Invalid Code
         flash('Incorrect Validation Code', 'warning')
         return redirect(url_for('index'))
-    confirmObj.user_id.confirmed = True
+    userobj = User.query.filter_by(id=confirmObj.user_id).first()
+    userobj.confirmed = True
     db.session.add(confirmObj)
 
     # Sending Email to the Admin
     msg = Message('Mitgliedsanmeldung von Website', sender=ADMINS[0], recipients=[ADMINS[0]])
     body = 'Folgende Mitgliedsdaten wurden in unserem Anmeldformular eingegeben und per E-Mail bestatigt: '
-    userObj = confirmObj.user_id
-    bankObj = confirmObj.user_id.bankdetails.first()
+    userObj = User.query.filter_by(id=confirmObj.user_id).first()
+    bankObj = userObj.bankdetails.first()
     body += 'Mitgliedsart: ' + str(userObj.membertype) + endl
     if userObj.company:
         body += 'Firma:' + userObj.company + endl
@@ -313,19 +305,21 @@ def delete_account(deletion_sequence):
         # Invalid Code
         flash('Incorrect Validation Code', 'warning')
         return redirect(url_for('index'))
-    id = confirmObj.user_id
-    db.session.delete(confirmObj.user_id.bankdetails)
+    userobj = User.query.filter_by(id=confirmObj.user_id).first()
+    db.session.delete(userobj.bankdetails)
     db.session.delete(confirmObj)
-    db.session.delete(User.query.filter_by(id=id))
+    db.session.delete(userobj)
     db.session.commit()
     flash('User Deleted Successfully', 'warning')
     return redirect(url_for('index'))
 
 
 @login_required
-@is_admin
 @app.route('/acceptuser/<confirmation_code>', methods=['GET'])
 def accept_request(confirmation_code):
+    if not is_admin(current_user):
+        flash('Admin Access required', 'warning')
+        return redirect(url_for('logout'))
     user = current_user
     if user.admin is not True:
         flash('Admin Access required', 'warning')
@@ -334,10 +328,11 @@ def accept_request(confirmation_code):
     if confirmObj is None:
         flash('Wrong Acceptance Code', 'error')
         return redirect(url_for('index'))  # Or any Other
-    confirmObj.user_id.confirmed = True
-    confirmObj.user_id.status = 1
+    userobj = User.query.filter_by(id=confirmObj.user_id).first()
+    userobj.confirmed = True
+    userobj.status = 1
     # sendAcceptancemail(confirmObj.user_id.id)
-    db.session.add(confirmObj.user_id)
+    db.session.add(userobj)
     db.session.delete(confirmObj)
     db.session.commit()
     flash('User Accepted to the Organisation', 'success')
@@ -345,9 +340,11 @@ def accept_request(confirmation_code):
 
 
 @login_required
-@is_admin
 @app.route('/rejectuser/<confirmation_code>', methods=['GET'])
 def reject_user(confirmation_code):
+    if not is_admin(current_user):
+        flash('Admin Access required', 'warning')
+        return redirect(url_for('logout'))
     user = current_user
     if user.admin is not True:
         flash('Admin Access required', 'warning')
@@ -356,8 +353,8 @@ def reject_user(confirmation_code):
     if confirmObj is None:
         flash('Wrong Acceptance Code', 'error')
         return redirect(url_for('index'))  # Or any Other
-
-    sendAcceptancemail(confirmObj.user_id.id, False)
+    userobj = User.query.filter_by(id=confirmObj.user_id).first()
+    # sendAcceptancemail(confirmObj.user_id.id, False)
     db.session.delete(confirmObj.user_id)
     db.session.delete(confirmObj)
     db.session.commit()
@@ -400,24 +397,30 @@ def reset_pass(reset_token):
         if forgot is None:
             flash('Invalid Reset Token!', 'error')
             return redirect(url_for('index'))
-        forgotObj.user_id.password = bcrypt.generate_password_hash(form.password.data)
+        userobj = User.query.filter_by(id=forgotObj.user_id).first()
+        userobj.password = bcrypt.generate_password_hash(form.password.data)
+        db.session.add(userobj)
         db.session.add(forgotObj)
         db.session.commit()
         flash('Password Updated Successfully','success')
         return redirect(url_for('index'))
 
 @login_required
-@is_verified
 @app.route('/bankprofile',methods=['GET'])
 def bank_profile():
+    if not is_verified(current_user):
+        flash('Please verify your account from your emailed Link!', 'error')
+        return redirect(url_for('index', next=request.url))
     if current_user.is_authenticated and current_user.authenticated:
         return render_template('pages/show-bank.html',user=current_user)
     return redirect(url_for('index'))
 
 @login_required
-@is_verified
 @app.route('/editbank',methods=['GET','POST'])
 def edit_bank_profile():
+    if not is_verified(current_user):
+        flash('Please verify your account from your emailed Link!', 'error')
+        return redirect(url_for('index', next=request.url))
     if not current_user.is_authenticated:
         return redirect(url_for('index'))
     form = EditBank()
@@ -442,11 +445,13 @@ def edit_bank_profile():
     return render_template('forms/edit-bank.html',form=form,user=current_user)
 
 @login_required
-@is_admin
 @app.route('/memberslist')
 def admin_list():
+    if not is_admin(current_user):
+        flash('Admin Access required', 'warning')
+        return redirect(url_for('logout'))
     user = current_user
-    if user.is_authenticated and user.admin:
+    if user.is_authenticated:
         #2nd Verification after decorator
         user_all = User.query.all()
         return render_template('pages/admin-landing.html',user_all=user_all,user=current_user)
@@ -455,9 +460,11 @@ def admin_list():
         return redirect(url_for('profile'))
 
 @login_required
-@is_admin
 @app.route('/getmemberprofile/<user_id>',methods=['GET'])
 def get_member_profile(user_id):
+    if not is_admin(current_user):
+        flash('Admin Access required', 'warning')
+        return redirect(url_for('logout'))
     userobj = User.query.filter_by(id=user_id).first()
     if userobj is None:
         flash('Member Profile ID Invalid')
@@ -465,9 +472,11 @@ def get_member_profile(user_id):
     return render_template('pages/show-user.html',user=userobj,next="/memberslist")
 
 @login_required
-@is_admin
 @app.route('/makeadmin/<user_id>')
 def make_admin(user_id):
+    if not is_admin(current_user):
+        flash('Admin Access required', 'warning')
+        return redirect(url_for('logout'))
     user = User.query.filter_by(id=user_id)
     if user is not None:
         user.admin = True

@@ -53,8 +53,9 @@ def is_admin(g):
     if g is not None and not g.admin:
         flash('Please Login with a Admin ID!', 'error')
         return False
-    elif g.user is None:
-        return True
+    elif g is None:
+        return False
+    return True
 
 def is_verified(g):
     if g and g.is_authenticated and (not g.confirmed and not g.admin):
@@ -469,7 +470,7 @@ def get_member_profile(user_id):
     if userobj is None:
         flash('Member Profile ID Invalid')
         return redirect(url_for('admin_list'))
-    return render_template('pages/show-user.html',user=userobj,next="/memberslist")
+    return render_template('pages/show-user.html',user=userobj,next="/memberslist",current_user=current_user)
 
 @login_required
 @app.route('/makeadmin/<user_id>')

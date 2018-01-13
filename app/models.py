@@ -9,7 +9,7 @@ class User(db.Model):
     #login
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(254),unique=True,nullable=False)
-    password = db.Column(db.String(400),nullable=False)
+    password = db.Column(db.VARCHAR(400),nullable=False)
     authenticated = db.Column(db.Boolean, default=False)
 
     #admin

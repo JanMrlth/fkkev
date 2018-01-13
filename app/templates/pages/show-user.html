@@ -31,55 +31,59 @@
                 <tbody>
                 <tr>
                     <td><b>Mitgliedsnummer</b></td>
-                    <td>FraKeKueV{{ user.id }}</td>
+                    <td>'FFK'{{ user.id }}</td>
                 </tr>
                 <tr class="success">
-                    <td><b>user.firstname</b></td>
-                    <td>First Name</td>
+                    <td><b>Vorname</b></td>
+                    <td>{{ user.firstname }}</td>
                 </tr>
                 <tr class="primary">
-                    <td><b>user.lastname</b></td>
-                    <td>Last Name</td>
+                    <td><b>Name</b></td>
+                    <td>{{ user.lastname }}</td>
                 </tr>
                 <tr class="info">
-                    <td><b>user.bday</b></td>
-                    <td>Birthday DD-MM-YY</td>
+                    <td><b>Geburtstag</b></td>
+                    <td>{{ user.bday }}</td>
                 </tr>
                 <tr class="warning">
-                    {% id user.road %}
-                        <td><b>user.road</b></td>
+                    <td><b>Straße</b></td>
+                    {% if user.road %}
+                        <td>{{ user.road }}</td>
                     {% else %}
-                        <td><b>No Road Provided</b></td>
+                        <td>No Road</td>
                     {% endif %}
-                    <td>Road</td>
                 </tr>
                 <tr class="active">
-                    <td><b>{{ user.postcode }}</b></td>
-                    <td>Post Code</td>
+                    <td><b>PLZ</b></td>
+                    <td>{{ user.postcode }}</td>
                 </tr>
                 <tr>
-                    <td><b>{{ user.town }}</b></td>
-                    <td>Town</td>
+                    <td><b>Ort</b></td>
+                    {% if user.town %}
+                        <td>{{ user.town }}</td>
+                    {% else %}
+                        <td>No Town</td>
+                    {% endif %}
                 </tr>
                 <tr class="success">
-                    <td><b>{{ user.email }}</b></td>
-                    <td>Mail</td>
+                    <td><b>E-Mail</b></td>
+                    <td>{{ user.email }}</td>
                 </tr>
                 <tr class="info">
+                    <td><b>Telefon</b></td>
                     {% if user.phone %}
-                        <td><b>{{ user.phone }}</b></td>
+                        <td>{{ user.phone }}</td>
                     {% else %}
-                        <td><b>Not Available</b></td>
+                        <td>No Phone</td>
                     {% endif %}
-                    <td>Phone</td>
                 </tr>
                 <tr class="active">
+                    <td><b>Handy</b></td>
                     {% if user.mobile %}
-                        <td><b>{{ user.mobile }}</b></td>
+                        <td>{{ user.mobile }}</td>
                     {% else %}
-                        <td><b>Not Available</b></td>
+                        <td>No Mobile</td>
                     {% endif %}
-                    <td>Mobile</td>
                 </tr>
                 </tbody>
             </table>
@@ -87,11 +91,12 @@
         <div class="col-md-3">
             <div class="image__container">
                 {% if user.image_url %}
-                    <img src="{{ user.image_url }}">
+                    <img src="{{ user.image_url }}" class="image__item">
                 {% else %}
-                    <img src="https://stroops.com/wp-content/uploads/2016/11/placeholder-profile-male-500x500.png">
+                    <img src="https://stroops.com/wp-content/uploads/2016/11/placeholder-profile-male-500x500.png"
+                         class="image__item">
                 {% endif %}
-                class="image__item">
+
                 <br><br>
                 <div class="alert alert-info alert-sm" class="image__text">
                     My profile pciture

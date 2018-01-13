@@ -1,24 +1,19 @@
 # coding=utf-8
 import base64
-import urllib2
-import bcrypt, string, random
-import mimetypes, urllib2
-import math
-
-import datetime
-from flask_login import login_user, login_required, current_user, logout_user
-from wtforms import ValidationError
-
-from app import app, db, mail
-from flask import Flask, render_template, request, redirect, url_for, flash
 import logging
+import random
+import string
+import urllib2
+from Crypto.Cipher import AES
 from logging import Formatter, FileHandler
 
-from app.forms import *
-import os
-from flask_mail import Mail, Message
-from Crypto.Cipher import AES
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import login_user, login_required, current_user, logout_user
+from flask_mail import Message
 from schwifty import IBAN
+
+from app import app, db, mail, bcrypt
+from app.forms import *
 from config import BLOCK_SIZE, PADDING, secret_key, ADMINS
 
 pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
@@ -57,12 +52,13 @@ def is_image_url(url):
 @app.route('/', methods=['GET'])
 def index():
     user = current_user
-    if user.authenticated == True:
+    if user.is_authenticated and user.authenticated:
         return redirect(url_for('profile'))
     form = LoginForm()
     return render_template('forms/login.html', form=form)
 
-@app.route('/profile')
+@login_required
+@app.route('/profile',methods=['GET'])
 def profile():
     if current_user.is_authenticated:
         return render_template('pages/show-user.html',user=current_user)
@@ -78,7 +74,7 @@ def login():
         if userData is None:
             flash('Invalid Email Provided', 'error')
             return redirect(url_for('index'))
-        if bcrypt.checkpw(form.password.data, userData.password):
+        if bcrypt.checkpw(userData.password,form.password.data):
             userData.authenticated = True
             db.session.add(userData)
             db.session.commit()
@@ -108,18 +104,11 @@ def logout_check():
 def register():
     form = RegisterForm()
     if form.validate_on_submit() and (int(form.membertype.data) in [1,2]) and (int(form.persontype.data) in [0,1,2]):
-        passwordTemp = ''.join((random.choice(chars)) for x in range(app.config['PWS_SIZE']))
-        first_fee = 9
+        passwordReal = ''.join((random.choice(chars)) for x in range(app.config['PWS_SIZE']))
+        passwordTemp = bcrypt.generate_password_hash(passwordReal)
         form.membertype.data = int(form.membertype.data)
         form.persontype.data = int(form.persontype.data)
 
-        if form.membertype.data == 1 and form.fee.data in [3, 6, 30]:
-            first_fee = 9
-        elif form.membertype.data == 2 and form.fee.data in [25, 35, 100]:
-            first_fee = 50
-        else:
-            flash('Fee Validation Error', 'error')
-            return redirect(url_for('register'))
         if (form.persontype.data == 1):
             userObj = User(email=form.email.data, password=passwordTemp, membertype=form.membertype.data,
                            persontype=form.persontype.data, fee=form.fee.data,
@@ -169,6 +158,7 @@ def register():
         msg = Message('Anmeldung Frankfurter Kelterei Kultur e.V.', sender=ADMINS[0], recipients=[userObj.email])
 
         body = 'Halle ' + userObj.firstname + endl
+        body += 'Login Details:' + endl + 'Email:' + userObj.email + endl + 'Password: ' + passwordReal + endl*3
         body += ('Wir freuen uber dein Interesse an der Frankfurter Kelterei Kultur! Du hast folgende Daten fur die Anmeldungubermittelt. Aus Grunden des Datenschutzes, musst du diese Daten ein zweites Mal aktiv bestatigen (double opt-in):') + endl
         body += ('Mitgliedsart: ' + str(userObj.membertype)) + endl
         if userObj.company:
@@ -327,7 +317,7 @@ def reset_pass(reset_token):
         if forgot is None:
             flash('Invalid Reset Token!', 'error')
             return redirect(url_for('index'))
-        forgotObj.user_id.password = form.password.data
+        forgotObj.user_id.password = bcrypt.generate_password_hash(form.password.data)
         db.session.add(forgotObj)
         db.session.commit()
         flash('Password Updated Successfully','success')
@@ -346,10 +336,10 @@ def internal_error(error):
 def not_found_error(error):
     return render_template('errors/404.html'), 404
 
-
-@app.route('/test')
-def test():
-    return render_template('forms/show-user.html')
+# @login_required
+# @app.route('/test')
+# def test():
+#     return render_template('pages/show-user.html',user=current_user)
 
 
 if not app.debug:

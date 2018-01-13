@@ -23,8 +23,7 @@ MAIL_PORT = int(os.environ.get('MAIL_PORT', '465'))
 MAIL_USE_TLS = int(os.environ.get('MAIL_USE_TLS', False))
 MAIL_USE_SSL = int(os.environ.get('MAIL_USE_SSL', True))
 MAIL_USERNAME = os.environ.get('MAIL_USERNAME','sanudatta12@gmail.com')
-MAIL_PASSWORD = PASSWORD
-print PASSWORD
+MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD',PASSWORD)
 MAIL_SENDER = os.environ.get('MAIL_SENDER', 'Admin<sanudatta12@gmail.com>')
 
 # administrator list

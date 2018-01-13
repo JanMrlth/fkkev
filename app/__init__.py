@@ -9,7 +9,7 @@ from flask_mail import Mail
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
-from flask.ext.bcrypt import Bcrypt
+from flask_bcrypt import Bcrypt
 # from flask_wtf.csrf import CSRFProtect
 #----------------------------------------------------------------------------#
 # App Config.

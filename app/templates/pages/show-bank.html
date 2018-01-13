@@ -2,6 +2,9 @@
 {% block title %}
     Bank Profile
 {% endblock %}
+{% block image_url %}
+    {{ user.image_url or "https://stroops.com/wp-content/uploads/2016/11/placeholder-profile-male-500x500.png" }}
+{% endblock %}
 {% block content %}
     <div class="row" class="row__container"
          style="	box-shadow: 0px 4px 32px rgba(189, 189, 189, 0.24); border: 3x solid #F2F2F2;">

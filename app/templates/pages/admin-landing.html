@@ -1,0 +1,135 @@
+{% extends('layouts/user-details.html') %}
+{% block title %}
+    User List
+{% endblock %}
+{% block image_url %}
+    {{ user.image_url or "https://stroops.com/wp-content/uploads/2016/11/placeholder-profile-male-500x500.png" }}
+{% endblock %}
+{% block content %}
+    <div class="row" class="row__container"
+         style="	box-shadow: 0 4px 32px rgba(189, 189, 189, 0.24); border: 3px solid #F2F2F2;">
+        {% with messages = get_flashed_messages(category_filter=["error"]) %}
+            {% if messages %}
+                <div class="alert alert-danger">
+                    <ul class="flashes" style="list-style-type:none">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% with messages = get_flashed_messages(category_filter=["warning"]) %}
+            {% if messages %}
+                <div class="alert alert-warning">
+                    <ul class="flashes" style="list-style-type:none">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% with messages = get_flashed_messages(category_filter=["success"]) %}
+            {% if messages %}
+                <div class="alert alert-success">
+                    <ul class="flashes" style="list-style-type:none">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+        <div class="side-nav"
+             style="height: 100%;background-color: #1c1c2b; width: 229px; position: absolute; z-index: 5 ;left: 0px; top: 0px;">
+            <br><br><br><br>
+            <a href="#" style="color: white; text-decoration:  none;">
+                <div class="nav-sub-heading">
+
+
+                    <h5><span class="glyphicon glyphicon-th-list" style="color: white"></span>&nbsp;&nbsp;List</h5>
+                </div>
+            </a>
+            <a href="#" style="color: white; text-decoration:  none;">
+                <div class="nav-sub-heading">
+                    <h5><span class="glyphicon glyphicon-bookmark"></span>&nbsp;&nbsp; Details</h5>
+                </div>
+            </a>
+            <a href="#" style="color: white; text-decoration:  none;">
+                <div class="nav-sub-heading">
+                    <h5><span class="glyphicon glyphicon-cog"></span> &nbsp;&nbsp;Functions</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3" style="height: 100%;">
+            <br><br><br><br><br><br>
+        </div>
+        <div class="col-md-9">
+            <br><br>
+            <h3 class="text text-center text-success" style="font-family: 'Montserrat'"><b>List of Members</b> <a
+                    href="#">
+            </a></h3>
+            <br>
+
+            <table class="table table-hover table__container" style="cursor: pointer;">
+                <thead>
+
+                <td>
+                    <b>Nr</b>
+                </td>
+                <td>
+                    <b>Vorname</b>
+                </td>
+                <td>
+                    <b>Nachname</b>
+                </td>
+                <td>
+                    <b>Straße</b>
+                </td>
+                <td>
+                    <b>PLZ</b>
+                </td>
+                <td>
+                    <b>Ort</b>
+                </td>
+                <td>
+                    <b>Details</b>
+                </td>
+                </thead>
+                <tbody>
+                {% for foo in user_all %}
+                    <tr>
+                        <td>
+                            {{ foo.id }}
+                        </td>
+                        <td>
+                            {{ foo.firstname }}
+                        </td>
+                        <td>
+                            {{ foo.lastname }}
+                        </td>
+                        <td>
+                            {{ foo.road or 'None' }}
+                        </td>
+                        <td>
+                            {{ foo.postcode or 'None' }}
+                        </td>
+                        <td>
+                            {{ foo.town or 'None' }}
+                        </td>
+                        <td>
+                            <a href="/getmemberprofile/{{ foo.id }}">
+                                <button class="btn btn-info"> Go To Profile</button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+{% endblock %}

@@ -36,4 +36,6 @@ PWS_SIZE = 10
 BLOCK_SIZE = 16
 PADDING = '{'
 
+DEFAULT_IMG = "https://stroops.com/wp-content/uploads/2016/11/placeholder-profile-male-500x500.png"
+
 secret_key = 'KdHAkFFhXXvkwMoG'

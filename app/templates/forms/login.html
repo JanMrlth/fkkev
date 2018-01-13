@@ -40,7 +40,6 @@
         <form method="POST" action="/login">
             <div class="form-group">
                 {{ form.hidden_tag() }}
-                {{ form.csrf_token }}
                 {{ form.email.label }}
                 {{ form.email(class = 'form-control', placeholder = "Enter Your email here", required = true,id="mailID",type="email") }}
                 {% if form.email.errors %}

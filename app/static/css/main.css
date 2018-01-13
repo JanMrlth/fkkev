@@ -1,63 +1,89 @@
 .row__container {
-	background: #FFFFFF; 
-	border: 1x solid #F2F2F2; 
-	box-sizing: border-box; 
-	box-shadow: 0px 4px 32px rgba(189, 189, 189, 0.24); 
-	border-radius: 4px;
+    background: #FFFFFF;
+    border: 1x solid #F2F2F2;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 32px rgba(189, 189, 189, 0.24);
+    border-radius: 4px;
 }
 
 .blue__alert {
-	margin-top: 300px; 
-	height: 380px; 
-	box-shadow: 0px 4px 32px rgba(189, 189, 189, 0.24); 
-	border: 4px solid #F2F2F2;
+    margin-top: 300px;
+    height: 380px;
+    box-shadow: 0px 4px 32px rgba(189, 189, 189, 0.24);
+    border: 4px solid #F2F2F2;
 }
 
-
 .alert__ul {
-	list-style: none;
-	font-family: 'Montserrat', sans-serif;
+    list-style: none;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .table__container {
-	font-family: 'Montserrat', sans-serif; 
-	border: 1px solid #F2F2F2;
+    font-family: 'Montserrat', sans-serif;
+    border: 1px solid #F2F2F2;
 }
 
 .image__container {
-	text-align: center; 
-	padding-left: 40px; 
-	padding-right: 40px;
+    text-align: center;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 .image__item {
-	margin-top: 200px; 
-	width: 100px; height: 100px;
-	border: 4px solid #F2F2F2; 
-	box-shadow: 0px 4px 32px rgba(189, 189, 189, 0.24); 
-	cursor: pointer;
+    margin-top: 200px;
+    width: 100px;
+    height: 100px;
+    border: 4px solid #F2F2F2;
+    box-shadow: 0px 4px 32px rgba(189, 189, 189, 0.24);
+    cursor: pointer;
 }
 
 .image__text {
-	font-family: 'Montserrat', sans-serif; border: 1px solid #F2F2F2; 
-	box-shadow: 0px 4px 32px rgba(189, 189, 189, 0.24);
+    font-family: 'Montserrat', sans-serif;
+    border: 1px solid #F2F2F2;
+    box-shadow: 0px 4px 32px rgba(189, 189, 189, 0.24);
 }
+
 .center-btn {
-margin-left: 50%;
+    margin-left: 50%;
 }
+
 .nav-sub-heading {
-	padding-left: 20px;
-	padding-top: 20px;
-	padding-bottom: 20px;
-	padding-right: 10px;
-	cursor: hand;
-	color: white;
-	width: 227px;
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 10px;
+    cursor: hand;
+    color: white;
+    width: 227px;
 
 }
 
 .nav-sub-heading:hover {
-	background-color: #2a323f;
-	border-left: 5px solid #f7f32a;
-	cursor: pointer;
+    background-color: #2a323f;
+    border-left: 5px solid #f7f32a;
+    cursor: pointer;
+}
+
+.img-circular {
+    border-radius: 50% !important;
+    height: 20% !important;
+    padding-left: 15% !important;
+    display: block;
+    border-top-left-radius: 100px;
+
+}
+
+.img-container {
+    padding-left: 40px;
+    padding-right: 40px;
+    height: 100px;
+    width: 190px;
+}
+
+.circular-img-tag {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+
 }

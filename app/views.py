@@ -5,8 +5,9 @@ import random
 import string
 import urllib2
 from Crypto.Cipher import AES
+from functools import wraps
 from logging import Formatter, FileHandler
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, g
 from flask_login import login_user, login_required, current_user, logout_user
 from flask_mail import Message
 from schwifty import IBAN
@@ -47,9 +48,21 @@ def is_image_url(url):
     else:
         return False
 
+def is_admin(f):
+    @wraps(f)
+    def _decorator(request, *args, **kwargs):
+        if g.user is not None and  not g.admin:
+            flash('Please Login with a Admin ID!','error')
+            return redirect(url_for('profile', next=request.url))
+        elif g.user is None:
+          return redirect(url_for('index'),next=request.url)
+        return f(*args, **kwargs)
+    return _decorator
+
 @login_manager.user_loader
 def get_user(ident):
   return User.query.get(int(ident))
+
 
 @app.route('/', methods=['GET'])
 def index():
@@ -398,6 +411,44 @@ def edit_bank_profile():
         db.session.commit()
         flash('Bank Details update successfully','success')
     return render_template('forms/edit-bank.html',form=form,user=current_user)
+
+@login_required
+@is_admin
+@app.route('/memberslist')
+def admin_list():
+    user = current_user
+    if user.admin:
+        #2nd Verification after decorator
+        user_all = User.query.all()
+        return render_template('pages/admin-landing.html',user_all=user_all,user=current_user)
+    else:
+        flash('Re Login as Admin!','error')
+        return redirect(url_for('profile'))
+
+@login_required
+@is_admin
+@app.route('/getmemberprofile/<user_id>',methods=['GET'])
+def get_member_profile(user_id):
+    userobj = User.query.filter_by(id=user_id)
+    if userobj is None:
+        flash('Member Profile ID Invalid')
+        return redirect(url_for('admin_list'))
+    return render_template('pages/show-user.html',user=userobj)
+
+@login_required
+@is_admin
+@app.route('/makeadmin/<user_id>')
+def make_admin(user_id):
+    user = User.query.filter_by(id=user_id)
+    if user is not None:
+        user.admin = True
+        db.session.add(user)
+        db.session.commit()
+        flash('Admin Account Added For Profile Id'+str(user.id),'success')
+        return redirect(url_for('admin_list'))
+    flash('User Id Invalid','error')
+    return redirect(url_for('admin_list'))
+
 # Error handlers.
 
 @app.errorhandler(500)
@@ -413,7 +464,7 @@ def not_found_error(error):
 @login_required
 @app.route('/test')
 def test():
-    return render_template('forms/edit-bank.html',user=current_user)
+    return render_template('pages/admin-landing.html',user=current_user)
 
 
 if not app.debug:

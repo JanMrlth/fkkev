@@ -50,7 +50,7 @@
                 <h1 class="registerForm__text "><b>Page 1 of 4</b></h1>
             </div>
             <div class="registerForm__footer" id="one">
-                {{ form.csrf_token }}
+                {{ form.hidden_tag() }}
                 <h3><b>Personal Details</b></h3>
                 {% set i=1 %}
                 {% for subField in form.membertype %}

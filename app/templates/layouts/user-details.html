@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
 </head>
-<body >
+<body>
 <nav class="navbar navbar-fixed-top navbar-inverse">
     <div class="container">
         <div class="navbar-header">
@@ -35,8 +35,9 @@
                 <li><a href="#contact">Contact</a></li>
             </ul>
 
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="/logout">Logout</a></li>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Log Out</a>
+                </li>
             </ul>
         </div><!-- /.nav-collapse -->
     </div><!-- /.container -->
@@ -50,6 +51,9 @@
      style="height: 100%;background-color: #1c1c2b; width: 229px; position: absolute; z-index: 5 ;left: 0px; top: 0px;">
     <br><br><br><br>
     <a href="/profile" style="color: white; text-decoration:  none;">
+        <div class="img-container">
+            <img class="circular-img-tag" src="{% block image_url %}{% endblock %}">
+        </div>
         <div class="nav-sub-heading">
             <h5><span class="glyphicon glyphicon-user" style="color: white"></span>&nbsp;&nbsp;Profile View</h5>
         </div>

@@ -36,10 +36,11 @@
                 </div>
             {% endif %}
         {% endwith %}
+        <div class="col-md-3">
+
+        </div>
         <div class="col-md-6">
-            <br><br>
             <h3 class="text text-center text-success" style="font-family: 'Montserrat'"><b>Member data</b></h3>
-            <br>
             <form method="post" action="/editprofile">
                 {{ form.hidden_tag() }}
                 <table class="table" style="font-family: 'Montserrat', sans-serif; border: 1px solid #F2F2F2;">
@@ -107,7 +108,6 @@
                     <button class="btn btn-success" class="center-btn" type="submit">Submit</button>
                 </div>
             </form>
-            <br><br>
         </div>
         <div class="col-md-3">
             <div class="image__container">

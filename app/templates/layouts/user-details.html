@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
 </head>
-<body>
+<body style="overflow: hidden">
 <nav class="navbar navbar-fixed-top navbar-inverse">
     <div class="container">
         <div class="navbar-header">
@@ -45,5 +45,34 @@
     <br><br><br><br>
     {% block content %}
     {% endblock %}
+</div>
+<div class="side-nav"
+     style="height: 100%;background-color: #1c1c2b; width: 229px; position: absolute; z-index: 5 ;left: 0px; top: 0px;">
+    <br><br><br><br>
+    <a href="/profile" style="color: white; text-decoration:  none;">
+        <div class="nav-sub-heading">
+            <h5><span class="glyphicon glyphicon-user" style="color: white"></span>&nbsp;&nbsp;Profile View</h5>
+        </div>
+    </a>
+    <a href="/editprofile" style="color: white; text-decoration:  none;">
+        <div class="nav-sub-heading">
+            <h5><span class="glyphicon glyphicon-user" style="color: white"></span>&nbsp;&nbsp;Edit Profile</h5>
+        </div>
+    </a>
+    <a href="/bankprofile" style="color: white; text-decoration:  none;">
+        <div class="nav-sub-heading">
+            <h5><span class="glyphicon glyphicon-book"></span>&nbsp;&nbsp; Bank Data</h5>
+        </div>
+    </a>
+    <a href="/editbank" style="color: white; text-decoration:  none;">
+        <div class="nav-sub-heading">
+            <h5><span class="glyphicon glyphicon-user" style="color: white"></span>&nbsp;&nbsp;Bank Details Edit</h5>
+        </div>
+    </a>
+    <a href="#" style="color: white; text-decoration:  none;">
+        <div class="nav-sub-heading">
+            <h5><span class="glyphicon glyphicon-usd"></span> &nbsp;&nbsp;My Invoices</h5>
+        </div>
+    </a>
 </div>
 </body>

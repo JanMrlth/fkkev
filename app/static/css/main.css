@@ -45,3 +45,19 @@
 .center-btn {
 margin-left: 50%;
 }
+.nav-sub-heading {
+	padding-left: 20px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-right: 10px;
+	cursor: hand;
+	color: white;
+	width: 227px;
+
+}
+
+.nav-sub-heading:hover {
+	background-color: #2a323f;
+	border-left: 5px solid #f7f32a;
+	cursor: pointer;
+}

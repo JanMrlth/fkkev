@@ -417,7 +417,7 @@ def edit_bank_profile():
 @app.route('/memberslist')
 def admin_list():
     user = current_user
-    if user.admin:
+    if user.is_authenticated and user.admin:
         #2nd Verification after decorator
         user_all = User.query.all()
         return render_template('pages/admin-landing.html',user_all=user_all,user=current_user)
@@ -429,11 +429,11 @@ def admin_list():
 @is_admin
 @app.route('/getmemberprofile/<user_id>',methods=['GET'])
 def get_member_profile(user_id):
-    userobj = User.query.filter_by(id=user_id)
+    userobj = User.query.filter_by(id=15).first()
     if userobj is None:
         flash('Member Profile ID Invalid')
         return redirect(url_for('admin_list'))
-    return render_template('pages/show-user.html',user=userobj)
+    return render_template('pages/show-user.html',user=userobj,next="/memberslist")
 
 @login_required
 @is_admin

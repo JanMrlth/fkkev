@@ -101,28 +101,40 @@ $(document).ready(function () {
         });
     });
 
-    // $("#plz").change(function () {
-    //     document.getElementById("city").disabled = true;
-    //     zip = document.getElementById("plz").value;
-    //     $.ajax({
-    //         type: "GET",    //GET or POST
-    //         url: 'http://api.zippopotam.us/DE/' + zip,    // Location of the service
-    //         dataType: "json",   //Expected data format from server
-    //         processdata: true   //True or False
-    //     }).done(function (data) {
-    //         console.log(data.places[0]);
-    //         places = data['places'][0];
-    //         document.getElementById("city").disabled = false;
-    //         document.getElementById("city").value = places['place name'];
-    //         console.log("city is:");
-    //     }).error(function (err) {
-    //         if (err) {
-    //             document.getElementById("city").disabled = false;
-    //             document.getElementById("city").placeholder = 'Not Found City';
-    //         }
-    //     });
-    //
-    // });
+    var apikey = 'trnsl.1.1.20180113T075442Z.22a20a0d7bef9610.2d8863fdd496c88d5b49c036ce7682c86bd4c039';
+    $("#plz").change(function () {
+        document.getElementById("city").disabled = true;
+        zip = document.getElementById("plz").value;
+        $.ajax({
+            type: "GET",    //GET or POST
+            url: 'http://api.zippopotam.us/DE/' + zip,    // Location of the service
+            dataType: "json",   //Expected data format from server
+            processdata: true   //True or False
+        }).done(function (data) {
+            console.log(data.places[0]);
+            place = data['places'][0]['place name'];
+            data = "key="+apikey+"&text="+place+"&lang=en";
+            $.ajax({
+                type:"POST",
+                data: data,
+                header: "Content-type: application/x-www-form-urlencoded",
+                url: "https://translate.yandex.net/api/v1.5/tr.json/translate",
+                dataType: "json",
+                processdata: true
+            }).done(function (result) {
+                document.getElementById("city").disabled = false;
+                document.getElementById("city").value = result.text[0];
+            }).error(function (err) {
+                document.getElementById("city").disabled = false;
+            });
+        }).error(function (err) {
+            if (err) {
+                document.getElementById("city").disabled = false;
+                document.getElementById("city").placeholder = 'Not Found City';
+            }
+        });
+
+    });
 });
 //
 var valBIC = 0;

@@ -47,7 +47,7 @@ class User(db.Model,UserMixin):
     last_seen = db.Column(db.DateTime, default=datetime.datetime.utcnow) #on website
 
     bankdetails = db.relationship('Bankdetails', backref='user',lazy='dynamic')
-    confirmed = db.Column(db.Boolean,default=False)
+    confirmed = db.Column(db.Boolean,default=False) # By User Confirmation
     confirmation = db.relationship("Confirmation", backref="User",lazy='dynamic')
     forgot = db.relationship("Forgotpassword", backref="User", lazy='dynamic')
 

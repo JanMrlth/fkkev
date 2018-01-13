@@ -27,9 +27,9 @@ MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD',PASSWORD)
 MAIL_SENDER = os.environ.get('MAIL_SENDER', 'Admin<sanudatta12@gmail.com>')
 
 # administrator list
-ADMINS = ['sanudatta12@gmail.com']
-PROTOCOL = 'http://'
-BASE_URL = PROTOCOL + 'www.xyz.com/'
+ADMINS = ['sanudatta12@gmail.com']   # Add your admin URL Here
+PROTOCOL = 'https://'
+BASE_URL = PROTOCOL + 'www.frankfurterkeltereikultur.org/'
 
 # AES
 PWS_SIZE = 10
@@ -38,4 +38,6 @@ PADDING = '{'
 
 DEFAULT_IMG = "https://stroops.com/wp-content/uploads/2016/11/placeholder-profile-male-500x500.png"
 
+# Required For decrypting IBAN and BIC - AES 128 Bit Encryption Used
 secret_key = 'KdHAkFFhXXvkwMoG'
+

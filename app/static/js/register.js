@@ -156,21 +156,21 @@ function appedDetails() {
     var bicCode = document.getElementById("bic").value;
     var monthlyPay = document.getElementById("payment").value;
 
-    // append personal details
-    $("#firstName-a").append(firstName);
-    $("#lastName-a").append(lastName);
-    $("#streetName-a").append(streetName);
-    $("#zipCode-a").append(zipCode);
-    $("#cityName-a").append(cityName);
-    $("#eMail-a").append(eMail);
+    // html personal details
+    $("#firstName-a").html(firstName);
+    $("#lastName-a").html(lastName);
+    $("#streetName-a").html(streetName);
+    $("#zipCode-a").html(zipCode);
+    $("#cityName-a").html(cityName);
+    $("#eMail-a").html(eMail);
 
-    // append bank details
+    // html bank details
 
-    $("#accountName-a").append(accountName);
-    $("#ibanCode-a").append(ibanCode);
-    $("#bicCode-a").append(bicCode);
-    $("#zipCode-a").append(zipCode);
-    $("#monthlyPay-a").append(monthlyPay);
+    $("#accountName-a").html(accountName);
+    $("#ibanCode-a").html(ibanCode);
+    $("#bicCode-a").html(bicCode);
+    $("#zipCode-a").html(zipCode);
+    $("#monthlyPay-a").html(monthlyPay);
 
 
     // console.log(str1, str2);
@@ -192,4 +192,4 @@ function appedDetails() {
 
 }
 
-// $( ".inner" ).append( "<p>Test</p>" );
+// $( ".inner" ).html( "<p>Test</p>" );

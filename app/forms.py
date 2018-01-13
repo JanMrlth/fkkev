@@ -19,7 +19,9 @@ class RegisterForm(Form):
         'Lastname', validators=[DataRequired(), Length(min=2, message="Too short Last Name")]
     )
     bday = DateField(
-        'Bday',
+        'Bday',[
+            Optional()
+        ]
     )
     road = StringField(
         'Road', validators=[Length(min=1, max=400), Optional()]
@@ -90,7 +92,9 @@ class UpdateProfile(Form):
         'Lastname', validators=[DataRequired(), Length(min=2, message="Too short Last Name")]
     )
     bday = DateField(
-        'Bday',
+        'Bday',[
+            Optional()
+        ]
     )
     road = StringField(
         'Road', validators=[Length(min=1, max=400), Optional()]

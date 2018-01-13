@@ -60,6 +60,17 @@ def is_admin(f):
         return f(*args, **kwargs)
     return _decorator
 
+def is_verified(f):
+    @wraps(f)
+    def _decorator(request, *args, **kwargs):
+        if g.user and g.user.is_authenticated and (not g.user.confirmed and not g.admin):
+            flash('Please verify your account from your emailed Link!','error')
+            return redirect(url_for('index', next=request.url))
+        elif g.user is None:
+          return redirect(url_for('index'),next=request.url)
+        return f(*args, **kwargs)
+    return _decorator
+
 @login_manager.user_loader
 def get_user(ident):
   return User.query.get(int(ident))
@@ -74,6 +85,7 @@ def index():
     return render_template('forms/login.html', form=form)
 
 @login_required
+@is_verified
 @app.route('/profile',methods=['GET'])
 def profile():
     if current_user.is_authenticated:
@@ -83,6 +95,7 @@ def profile():
         return redirect(url_for('index'))
 
 @login_required
+@is_verified
 @app.route('/editprofile',methods=['GET','POST'])
 def update_profile():
     if current_user.is_authenticated:
@@ -264,7 +277,6 @@ def confirm_account(confirmation_sequence):
         return redirect(url_for('index'))
     confirmObj.user_id.confirmed = True
     db.session.add(confirmObj)
-    db.session.commit()
 
     # Sending Email to the Admin
     msg = Message('Mitgliedsanmeldung von Website', sender=ADMINS[0], recipients=[ADMINS[0]])
@@ -288,6 +300,8 @@ def confirm_account(confirmation_sequence):
     body += app.config['BASE_URL'] + 'rejectuser/' + confirmation_sequence
     msg.html = body.encode('utf-8')
     mail.send(msg)
+    db.session.delete(confirmObj)
+    db.session.commit()
     flash('User Validated Successfully!', 'success')
     return redirect(url_for('index'))  # Will Change this to profile Page
 
@@ -299,15 +313,17 @@ def delete_account(deletion_sequence):
         # Invalid Code
         flash('Incorrect Validation Code', 'warning')
         return redirect(url_for('index'))
-    confirmObj.user_id.confirmed = True
-    db.session.delete(confirmObj.user_id)
+    id = confirmObj.user_id
+    db.session.delete(confirmObj.user_id.bankdetails)
     db.session.delete(confirmObj)
+    db.session.delete(User.query.filter_by(id=id))
     db.session.commit()
     flash('User Deleted Successfully', 'warning')
     return redirect(url_for('index'))
 
 
 @login_required
+@is_admin
 @app.route('/acceptuser/<confirmation_code>', methods=['GET'])
 def accept_request(confirmation_code):
     user = current_user
@@ -319,7 +335,8 @@ def accept_request(confirmation_code):
         flash('Wrong Acceptance Code', 'error')
         return redirect(url_for('index'))  # Or any Other
     confirmObj.user_id.confirmed = True
-    sendAcceptancemail(confirmObj.user_id.id)
+    confirmObj.user_id.status = 1
+    # sendAcceptancemail(confirmObj.user_id.id)
     db.session.add(confirmObj.user_id)
     db.session.delete(confirmObj)
     db.session.commit()
@@ -328,6 +345,7 @@ def accept_request(confirmation_code):
 
 
 @login_required
+@is_admin
 @app.route('/rejectuser/<confirmation_code>', methods=['GET'])
 def reject_user(confirmation_code):
     user = current_user
@@ -389,6 +407,7 @@ def reset_pass(reset_token):
         return redirect(url_for('index'))
 
 @login_required
+@is_verified
 @app.route('/bankprofile',methods=['GET'])
 def bank_profile():
     if current_user.is_authenticated and current_user.authenticated:
@@ -396,6 +415,7 @@ def bank_profile():
     return redirect(url_for('index'))
 
 @login_required
+@is_verified
 @app.route('/editbank',methods=['GET','POST'])
 def edit_bank_profile():
     if not current_user.is_authenticated:

@@ -113,6 +113,12 @@ class UpdateProfile(Form):
     image_url = StringField(
         'Image Url', validators=[Optional()]
     )
+    password = PasswordField('New Password', [
+        Optional(),
+        EqualTo('confirm', message='Passwords must match'),
+        Length(min=8, max=300, message="Your password must be between 8 and 300 characters!")
+    ])
+    confirm = PasswordField('Repeat Password')
 
 class EditBank(Form):
     account_holder = StringField(

@@ -36,12 +36,11 @@ def sendAcceptancemail(user_id, selected=True):
 
 
 def is_image_url(url):
-    print url
-    check = url[:4]
-    check2 = url[:5]
+    check = url[-4:]
+    check2 = url[-5:]
     if check == '.jpg' or check == '.png' or check2 == '.jpeg':
-        ret = urllib2.urlopen(url)
-        if url.status == 200:
+        ret = urllib2.urlopen(url).getcode()
+        if ret == 200:
             return True
         else:
             return False
@@ -86,9 +85,14 @@ def update_profile():
             user.phone = form.phone.data if form.phone.data else user.phone
             user.mobile = form.mobile.data if form.mobile.data else user.mobile
             if form.image_url and  not is_image_url(form.image_url.data):
+                    print form.image_url.data
                     flash('Image URL Invalid','error')
                     return redirect(url_for('update_profile'))
             user.image_url = form.image_url.data if form.image_url.data else user.image_url
+
+            if form.password.data and current_user.is_authenticated:
+                user.password = bcrypt.generate_password_hash(form.password.data)
+                flash('Password Updated','success')
             db.session.add(current_user)
             db.session.commit()
             flash('Updated Profile Successfully','success')

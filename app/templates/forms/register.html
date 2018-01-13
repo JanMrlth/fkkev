@@ -40,7 +40,7 @@
         <div class="container__rigisterForm" style=" margin-top: 80px;     box-shadow: 5px 10px #888888;">
             {% for field in form.errors %}
                 {% for error in form.errors[field] %}
-                    <div class="alert alert-error">
+                    <div class="alert alert-danger">
                         {{ field }}
                         <strong>Error!</strong> {{ error }}
                     </div>

@@ -13,3 +13,4 @@ flask_script
 flask_migrate
 validators
 pycrypto
+uwsgi

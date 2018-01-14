@@ -51,7 +51,7 @@
             </div>
             <div class="registerForm__footer" id="one">
                 {{ form.hidden_tag() }}
-                <h3><b>Personal Details</b></h3>
+                <h3><b>Angaben zur Person</b></h3>
                 {% set i=1 %}
                 {% for subField in form.membertype %}
                     <div class="form-check" style="display: inline;">
@@ -80,12 +80,12 @@
                     {{ form.lastname(class="form-control",id="lName",placeholder="Huan",required=True) }}
                 </div>
                 <div class="form-group" id="bDay_toggle">
-                    <label for="bDay" style="float: left;">Birthday</label>
+                    <label for="bDay" style="float: left;">Geburtstag</label>
                     {{ form.bday(class="form-control",id="bDay",placeholder="DD-MM-YY",type="date") }}
                 </div>
 
                 <div class="form-group">
-                    <label for="mail" style="float: left;">Email ID</label>
+                    <label for="mail" style="float: left;">E-Mail ID</label>
                     {{ form.email(class="form-control",id="mail",placeholder="yourname@domamin.com",type="email",required=True) }}
                 </div>
                 <div class="form-group">
@@ -93,7 +93,7 @@
                     {{ form.road(class="form-control",id="sName",placeholder="Letzter Hasenpfad",required=True) }}
                 </div>
                 <div class="form-group">
-                    <label for="plz" style="float: left;">Zip Code</label>
+                    <label for="plz" style="float: left;">Postleitzahl</label>
                     {{ form.postcode(class="form-control",id="plz",placeholder="12345",type="number",required=True) }}
                 </div>
                 <div class="form-group">
@@ -110,7 +110,7 @@
                     <h1 class="registerForm__text "><b>Page 2 of 4</b></h1>
                 </div>
                 <div class="registerForm__footer" id="two">
-                    <h3><b>Voluntary Data</b></h3>
+                    <h3><b>Freiwillige Angaben zur Person</b></h3>
                     <br><br>
                     <div class="form-group">
                         <label for="phoneNumber" style="float: left;">Telefonnummer</label>
@@ -125,18 +125,18 @@
                         {{ form.image_url(class="form-control",id="phoneNumber",placeholder="49-12345678901",type="url") }}
                     </div>
                     <br> <br>
-                    <button class="btn btn-info" onclick="show('two','one')" type="button">Previous</button>
-                    <button class="btn btn-success" onclick="show('two','three')" type="button">Continue</button>
+                    <button class="btn btn-info" onclick="show('two','one')" type="button">Zur&uuml;ck</button>
+                    <button class="btn btn-success" onclick="show('two','three')" type="button">Weiter</button>
 
                 </div>
                 <div class="registerForm__header">
                     <h1 class="registerForm__text "><b>Page 3 of 4</b></h1>
                 </div>
                 <div class="registerForm__footer" id="three">
-                    <h3><b>Please fill the details</b></h3>
+                    <h3><b>Kontodaten</b></h3>
                     <br><br>
                     <div class="form-group">
-                        <label for="bName" style="float: left;">Bank Account Name</label>
+                        <label for="bName" style="float: left;">Kontoinhaber</label>
                         {{ form.account_holder(class="form-control",id="bName",placeholder="ABC XYZ",required=True) }}
                     </div>
                     <div class="form-group">
@@ -152,7 +152,7 @@
 
                     <div id="flag_one">
                         <div class="form-group">
-                            <label for="payment" style="float: left;">Monthly Payment</label>
+                            <label for="payment" style="float: left;">Mtl.Beitrag</label>
                             {{ form.fee(class="form-control",id="payment",value="9",type="number",required=True) }}
                         </div>
                         <div class="form-check" style="display: inline;">
@@ -180,7 +180,7 @@
                     <br>
                     <div id="flag_two">
                         <div class="form-group">
-                            <label for="paymen__twot" style="float: left;">Monthly Payment</label>
+                            <label for="paymen__twot" style="float: left;">Mtl. F&ouml;rderbeitrag</label>
                             <input type="number" class="form-control" id="payment__two" value="50">
                         </div>
                         <div class="form-check" style="display: inline;">
@@ -207,8 +207,8 @@
                         <br>
                     </div>
                     <br>
-                    <button class="btn btn-info" onclick="show('three','two')" type="button">Previous</button>
-                    <button class="btn btn-success" onclick="appedDetails()" type="button">Continue</button>
+                    <button class="btn btn-info" onclick="show('three','two')" type="button">Zur&uuml;ck</button>
+                    <button class="btn btn-success" onclick="appedDetails()" type="button">Weiter</button>
 
                 </div>
 
@@ -216,7 +216,7 @@
                     <h1 class="registerForm__text "><b>Page 4 of 4</b></h1>
                 </div>
                 <div class="registerForm__footer" id="four">
-                            <h3><b>Personal Details</b></h3>
+                            <h3><b>Zusammenfassung der eingegebenen Daten</b></h3>
                             <table class="table table-hover">
                                 <tbody>
                                 <tr>
@@ -228,7 +228,7 @@
                                     <td id="lastName-a"></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Starbe</b></td>
+                                    <td><b>Stra&szlig;e</b></td>
                                     <td id="streetName-a"></td>
                                 </tr>
                                 <tr>
@@ -240,18 +240,18 @@
                                     <td id="cityName-a"></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Email</b></td>
+                                    <td><b>E-Mail</b></td>
                                     <td id="eMail-a"></td>
                                 </tr>
 
                                 </tbody>
                             </table>
 
-                            <h3><b>Bank Details</b></h3>
+                            <h3><b>Kontodaten</b></h3>
                             <table class="table table-hover">
                                 <tbody>
                                 <tr>
-                                    <td><b>Kotoinaber</b></td>
+                                    <td><b>Kontoinhaber</b></td>
                                     <td id="accountName-a"></td>
                                 </tr>
                                 <tr>
@@ -273,8 +273,8 @@
 <div class="form-group">
   <textarea class="form-control" rows="5" id="comment" value="" readonly>Ich ermächtige den Frankfurter Kelterei Kultur e.V., Zahlungen von meinem Konto mittels Lastschrift einzuziehen. Zugleich weise ich mein Kreditinstitut an, die vom Frankfurter Kelterei Kultur e.V. auf mein Konto gezogenen Lastschriften einzulösen. Hinweis: Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belastenden Betrages verlangen. Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen.</textarea>
 </div>
-                    <button class="btn btn-info" onclick="show('four','three')" type="button">Previous</button>
-                    <button type="submit" class="btn btn-primary" id="submitBtn" disabled="">Submit</button>
+                    <button class="btn btn-info" onclick="show('four','three')" type="button">Zur&uuml;ck</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn" disabled="">Verbindlich beitreten</button>
                 </div>
             </div>
         </div>

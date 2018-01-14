@@ -8,9 +8,72 @@ function unicodeEscape(str) {
         return '\\u' + ('0000' + escape.charCodeAt().toString(16)).slice(-4);
     });
 }
+
+
+
+function showFirst(str1, str2) {
+    console.log(str1, str2);
+    // body...
+    var toggle_div_one =true;
+    var firstName = document.getElementById("fName").value;//done
+    var lastName = document.getElementById("lName").value; //done
+    var streetName = document.getElementById("sName").value; //done
+    var zipCode = document.getElementById("plz").value;  //done
+    var cityName = document.getElementById("city").value; //done
+    var eMail = document.getElementById("mail").value; //done
+
+
+
+    var showDiv = document.getElementById(str2);
+    var hideDiv = document.getElementById(str1);
+
+     if (firstName == "") {
+        alert("Please give a valid First Name ");  
+        toggle_div_one = false;      
+    }
+        if (lastName == "") {
+        alert("Please give a valid Last Name");  
+        toggle_div_one = false;      
+    }
+        if (streetName == "") {
+        alert("Please give a valid street name");  
+        toggle_div_one = false;      
+    }
+        if (zipCode == "") {
+        alert("Please give a valid PLZ");  
+        toggle_div_one = false;      
+    }
+        if (cityName == "") {
+        alert("Please give a valid city name");  
+        toggle_div_one = false;      
+    }
+        if (eMail == "") {
+        alert("Please give a valid email");  
+        toggle_div_one = false;      
+    }
+
+
+
+    if (toggle_div_one) {
+
+    hideDiv.style.display = "none";
+    showDiv.style.display = "block";
+    if (flag == 1) {
+        console.log(flag);
+        document.getElementById("flag_one").style.display = "inline";
+    }
+    else {
+        console.log(flag);
+        document.getElementById("flag_two").style.display = "inline";
+    }
+    document.getElementById("bName").value = document.getElementById("fName").value + " " + document.getElementById("lName").value;
+
+    }
+}
 function show(str1, str2) {
     console.log(str1, str2);
     // body...
+
     var showDiv = document.getElementById(str2);
     var hideDiv = document.getElementById(str1);
     hideDiv.style.display = "none";
@@ -141,13 +204,14 @@ var valBIC = 0;
 
 
 function appedDetails() {
+    var toggle_div = true;
     // personal details
-    var firstName = document.getElementById("fName").value;
-    var lastName = document.getElementById("lName").value;
-    var streetName = document.getElementById("sName").value;
-    var zipCode = document.getElementById("plz").value;
-    var cityName = document.getElementById("city").value;
-    var eMail = document.getElementById("mail").value;
+    var firstName = document.getElementById("fName").value;//done
+    var lastName = document.getElementById("lName").value; //done
+    var streetName = document.getElementById("sName").value; //done
+    var zipCode = document.getElementById("plz").value;  //done
+    var cityName = document.getElementById("city").value; //done
+    var eMail = document.getElementById("mail").value; //done
 
     // bank details
 
@@ -171,10 +235,29 @@ function appedDetails() {
     $("#bicCode-a").html(bicCode);
     $("#zipCode-a").html(zipCode);
     $("#monthlyPay-a").html(monthlyPay);
+    console.log(accountName);
+    if ((accountName == " ") || (accountName == "")){
+        alert("Please give a valid in account name");  
+        toggle_div = false;      
+    }
+    if (ibanCode == "") {
+        alert("Please give a valid IBAN number");  
+        toggle_div = false;      
+    }
+     if (bicCode == "") {
+        alert("Please give a valid BIC number");  
+        toggle_div = false;      
+    }
+     if (monthlyPay == "") {
+        alert("Please give a valid BIC number");  
+        toggle_div = false;      
+    }
 
-
+    
     // console.log(str1, str2);
     // body...
+    if (toggle_div) {
+
     var showDiv = document.getElementById("four");
     var hideDiv = document.getElementById("three");
     hideDiv.style.display = "none";
@@ -189,6 +272,7 @@ function appedDetails() {
     }
     document.getElementById("bName").value = document.getElementById("fName").value + " " + document.getElementById("lName").value;
 
+    }
 
 }
 
@@ -219,6 +303,6 @@ else
         $( "#submitBtn" ).prop( "disabled", true );
         btn_disabled = 1;
     console.log(btn_disabled);
-        
+
 }
 });

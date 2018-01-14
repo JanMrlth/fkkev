@@ -193,3 +193,32 @@ function appedDetails() {
 }
 
 // $( ".inner" ).html( "<p>Test</p>" );
+
+
+
+
+// var checker = document.getElementById('checkme');
+// var sendbtn = document.getElementById('submitBtn');
+// sendbtn.disabled=true;
+// checker.onchange = function() {
+//     console.log("HOLA");
+    // console.log(sendbtn)
+//   sendbtn.disabled = false;
+// };
+
+btn_disabled = 1;
+$( "#checkme" ).change(function() {
+if(btn_disabled == 1)
+{
+    $( "#submitBtn" ).prop( "disabled", false );
+    btn_disabled = 0;
+    console.log(btn_disabled);
+}
+else
+{
+        $( "#submitBtn" ).prop( "disabled", true );
+        btn_disabled = 1;
+    console.log(btn_disabled);
+        
+}
+});

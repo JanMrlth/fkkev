@@ -10,8 +10,8 @@ WTF_CSRF_ENABLED = True
 SECRET_KEY = os.urandom(24)
 
 # Connect to the database
-SQLALCHEMY_DATABASE_URI = 'mysql://root:KsuqdGz==yqN7w#&@fkkev.cflb6hvzzafw.us-east-1.rds.amazonaws.com:3306/fkkevdb'
-# SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
+# SQLALCHEMY_DATABASE_URI = 'mysql://root:KsuqdGz==yqN7w#&@fkkev.cflb6hvzzafw.us-east-1.rds.amazonaws.com:3306/fkkevdb'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
 # SQLALCHEMY_DATABASE_URI = 'mysql://<username>:<password>@<hostname>:<port>/<db_name>'
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 SQLALCHEMY_TRACK_MODIFICATIONS = False

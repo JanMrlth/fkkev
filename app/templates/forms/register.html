@@ -47,7 +47,7 @@
                 {% endfor %}
             {% endfor %}
             <div class="registerForm__header">
-                <h1 class="registerForm__text "><b>Page 1 of 4</b></h1>
+                <h1 class="registerForm__text "><b>Seite 1 von 4</b></h1>
             </div>
             <div class="registerForm__footer" id="one">
                 {{ form.hidden_tag() }}
@@ -68,7 +68,7 @@
 
                     <div class="form-group">
                         {{ form.company.label }}
-                        {{ form.company(class="form-control",id="cName",placeholder="Enter your Company Name") }}
+                        {{ form.company(class="form-control",id="cName",placeholder="Firmenname") }}
                     </div>
                 </div>
                 <div class="form-group">
@@ -86,28 +86,28 @@
 
                 <div class="form-group">
                     <label for="mail" style="float: left;">E-Mail ID</label>
-                    {{ form.email(class="form-control",id="mail",placeholder="yourname@domamin.com",type="email",required=True) }}
+                    {{ form.email(class="form-control",id="mail",placeholder="peterhuan@domamin.com",type="email",required=True) }}
                 </div>
                 <div class="form-group">
                     <label for="sName" style="float: left;">Straße & Nr</label>
-                    {{ form.road(class="form-control",id="sName",placeholder="Letzter Hasenpfad",required=True) }}
+                    {{ form.road(class="form-control",id="sName",placeholder="Letzter Hasenpfad 2",required=True) }}
                 </div>
                 <div class="form-group">
                     <label for="plz" style="float: left;">Postleitzahl</label>
-                    {{ form.postcode(class="form-control",id="plz",placeholder="12345",type="number",required=True) }}
+                    {{ form.postcode(class="form-control",id="plz",placeholder="60528",type="number",required=True) }}
                 </div>
                 <div class="form-group">
                     <label for="city" style="float: left;">Stadt</label>
-                    {{ form.town(class="form-control",id="city",placeholder="City Name",required=True) }}
+                    {{ form.town(class="form-control",id="city",placeholder="Frankfurt",required=True) }}
                 </div>
                 {{ form.persontype(type="number",id="topVAl",value=0) }}
                 <br>
-                <button class="btn btn-success" onclick="showFirst('one','two')" type="button">Continue</button>
+                <button class="btn btn-success" onclick="showFirst('one','two')" type="button">weiter</button>
 
             </div>
             <div>
                 <div class="registerForm__header">
-                    <h1 class="registerForm__text "><b>Page 2 of 4</b></h1>
+                    <h1 class="registerForm__text "><b>Seite 2 von  4</b></h1>
                 </div>
                 <div class="registerForm__footer" id="two">
                     <h3><b>Freiwillige Angaben zur Person</b></h3>
@@ -126,7 +126,7 @@
                     </div>
                     <br> <br>
                     <button class="btn btn-info" onclick="show('two','one')" type="button">Zur&uuml;ck</button>
-                    <button class="btn btn-success" onclick="show('two','three')" type="button">Weiter</button>
+                    <button class="btn btn-success" onclick="show('two','three')" type="button">weiter</button>
 
                 </div>
                 <div class="registerForm__header">
@@ -207,8 +207,8 @@
                         <br>
                     </div>
                     <br>
-                    <button class="btn btn-info" onclick="show('three','two')" type="button">Zur&uuml;ck</button>
-                    <button class="btn btn-success" onclick="appedDetails()" type="button">Weiter</button>
+                    <button class="btn btn-info" onclick="show('three','two')" type="button">zur&uuml;ck</button>
+                    <button class="btn btn-success" onclick="appedDetails()" type="button">weiter</button>
 
                 </div>
 
@@ -263,7 +263,7 @@
                                     <td id="bicCode-a"></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Mtl.Beitrag</b></td>
+                                    <td><b>Monatlicher Beitrag</b></td>
                                     <td id="monthlyPay-a"></td>
                                 </tr>
 

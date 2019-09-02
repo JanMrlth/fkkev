@@ -3,7 +3,7 @@ import base64
 import logging
 import random
 import string
-import urllib2
+import urllib
 from Crypto.Cipher import AES
 from functools import wraps
 from logging import Formatter, FileHandler
@@ -28,7 +28,7 @@ from app.models import User, Bankdetails, Confirmation, Forgotpassword
 
 memberType = ['']
 endl = '<br>'
-chars = (string.letters + string.digits)
+chars = (string.ascii_letters + string.digits)
 
 
 # Custom Functions
@@ -136,7 +136,7 @@ def login():
             userData.authenticated = True
             db.session.add(userData)
             db.session.commit()
-            print 'In'
+            print('In')
             login_user(userData, remember=True)
             return redirect(url_for('profile'))
         else:

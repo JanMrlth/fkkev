@@ -1,3 +1,4 @@
+wheel
 Fabric
 Flask-SQLAlchemy
 Flask-WTF

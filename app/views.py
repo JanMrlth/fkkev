@@ -221,14 +221,14 @@ def register():
         # Sending Email
         msg = Message('Anmeldung Frankfurter Kelterei Kultur e.V.', sender=ADMINS[0], recipients=[userObj.email])
 
-        body = 'Halle ' + userObj.firstname + endl
+        body = 'Hallo ' + userObj.firstname + endl
         body += 'Login Details:' + endl + 'Email:' + userObj.email + endl + 'Password: ' + passwordReal + endl*3
         body += ('Wir freuen uber dein Interesse an der Frankfurter Kelterei Kultur! Du hast folgende Daten fur die Anmeldungubermittelt. Aus Grunden des Datenschutzes, musst du diese Daten ein zweites Mal aktiv bestatigen (double opt-in):') + endl
         body += ('Mitgliedsart: ' + str(userObj.membertype)) + endl
         if userObj.company:
             body += 'Firma:' + userObj.company + endl
         body += 'Name: ' + (userObj.firstname + ' ' + userObj.lastname).title() + endl
-        body += 'Addresse: ' + userObj.town.decode("windows-1252").encode('utf-8') + endl + 'Zipcode: ' + str(userObj.postcode) + endl
+        # body += 'Addresse: ' + userObj.town.decode("windows-1252").encode('utf-8') + endl + 'Zipcode: ' + str(userObj.postcode) + endl
         body += 'Alter: ' + userObj.bday.strftime("%Y-%m-%d") + endl * 3
         body += 'Kontodaten' + endl * 4 + '================='
         body += 'Kontoinhaber :' + bankObj.account_holder + endl
@@ -240,9 +240,9 @@ def register():
         while Confirmation.query.filter_by(confirmation_code=confirmationSequence).count() > 0:
             confirmationSequence = ''.join((random.choice(chars)) for x in range(50))
         body += app.config['BASE_URL'] + 'verifyaccount/' + confirmationSequence + endl*3
-        body += 'Loschen der Anmeldung ' + endl
+        body += 'Löschen der Anmeldung ' + endl
         body += app.config['BASE_URL'] + 'deleteaccount/' + confirmationSequence + endl*3
-        body += 'Beste Grube'
+        body += 'Beste Grüße'
         msg.html = body.encode('utf-8')
         confirmobj = Confirmation(confirmation_code=confirmationSequence)
         try:

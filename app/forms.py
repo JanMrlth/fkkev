@@ -1,10 +1,10 @@
-# coding=utf-8
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import TextField, PasswordField, StringField, IntegerField, DateField, RadioField
+# coding=utf-8
 from wtforms.validators import DataRequired, EqualTo, Length, email, NumberRange, Required, Email, URL, Optional
 
 
-class RegisterForm(Form):
+class RegisterForm(FlaskForm):
     membertype = RadioField(
         [DataRequired()],
         choices=[('1', 'Ordinary Member'), ('2', 'Sustaining Member')], default=1
@@ -61,18 +61,18 @@ class RegisterForm(Form):
     )
 
 
-class LoginForm(Form):
+class LoginForm(FlaskForm):
     email = StringField('Email', [DataRequired(), Length(min=6, max=254), Email()])
     password = PasswordField('Password', [DataRequired()])
 
 
-class ForgotForm(Form):
+class ForgotForm(FlaskForm):
     email = StringField(
         'Email', validators=[DataRequired(), Length(min=6, max=254), Email()]
     )
 
 
-class ResetForm(Form):
+class ResetForm(FlaskForm):
     password = PasswordField('New Password', [
         DataRequired(),
         EqualTo('confirm', message='Passwords must match'),
@@ -84,7 +84,7 @@ class ResetForm(Form):
         [Length(min=40,message="Invalid Token")]
     )
 
-class UpdateProfile(Form):
+class UpdateProfile(FlaskForm):
     firstname = StringField(
         'Firstname', validators=[DataRequired(), Length(min=2, message="Too short First Name")]
     )
@@ -124,7 +124,7 @@ class UpdateProfile(Form):
     ])
     confirm = PasswordField('Repeat Password')
 
-class EditBank(Form):
+class EditBank(FlaskForm):
     account_holder = StringField(
         'Accountname', validators=[DataRequired(), Length(min=10, max=200, message="Invalid Account Name")]
     )

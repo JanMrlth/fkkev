@@ -1,5 +1,5 @@
 import os
-from pass1 import PASSWORD
+from pass1 import PASSWORD, IBAN-KEY
 # Grabs the folder where the script runs.
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -41,5 +41,5 @@ PADDING = '{'
 DEFAULT_IMG = "https://stroops.com/wp-content/uploads/2016/11/placeholder-profile-male-500x500.png"
 
 # Required For decrypting IBAN and BIC - AES 128 Bit Encryption Used
-secret_key = '<CHANGE-THIS-KEY>'
+secret_key = '<IBAN-KEY>'
 

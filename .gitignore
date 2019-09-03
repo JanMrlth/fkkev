@@ -9,4 +9,3 @@ venv
 gpgkey.txt
 .vscode/*
 ssh/*
-config.py
